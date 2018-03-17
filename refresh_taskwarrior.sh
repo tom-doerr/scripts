@@ -1,6 +1,6 @@
 #! /bin/bash
 
-filename=~/Nextcloud/sonstiges/timewarrior/data/
+filename=~/Nextcloud/sonstiges/task/backlog.data
 
 clear
 task
