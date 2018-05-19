@@ -8,6 +8,10 @@ if [ "$1" == "custom" ]
 then
     remote_port=444
     local_port=443
+elif [ "$1" == "ssh" ]
+then
+    remote_port=220
+    local_port=22
 fi
 
 echo "Forwarding remote port $remote_port to port $local_port"
@@ -17,7 +21,7 @@ while true
 do
     echo `date --rfc-3339=seconds`   Connecting
     output=$(ssh -o TCPKeepAlive=no -o ServerAliveInterval=15 -nNT -R $remote_port:localhost:$local_port root@v22016124111441558.luckysrv.de)
-    sleep 15
+    sleep 60
     #if [[ $output = *"remote port forwarding failed"* ]]
 
 done
