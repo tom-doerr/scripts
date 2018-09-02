@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import subprocess
 PROCESS = subprocess.Popen('task _projects'.split(), stdout=subprocess.PIPE)
 OUTPUT, ERROR = PROCESS.communicate()
