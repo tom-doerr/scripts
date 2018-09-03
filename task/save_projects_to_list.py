@@ -1,6 +1,17 @@
 #!/usr/bin/env python3
 
 import subprocess
+import os.path
+
+LOCK_PATH = '/tmp/save_projects_to_list.lock'
+
+
+if os.path.isfile(LOCK_PATH):
+    exit()
+
+open(LOCK_PATH, 'w+')
+
+
 PROCESS = subprocess.Popen('task _projects'.split(), stdout=subprocess.PIPE)
 OUTPUT, ERROR = PROCESS.communicate()
 projects_list = set()
@@ -10,9 +21,9 @@ for s in OUTPUT.decode('UTF-8').split('\n'):
 
 
 with open('/home/tom/Nextcloud/documents/gtd/projects', 'r') as f:
-    content = f.readlines()
-    
-for s in content:
+    CONTENT = f.readlines()
+
+for s in CONTENT:
     s = s.replace('\n', '')
     projects_list.add(s)
 
@@ -22,3 +33,5 @@ print(projects_list)
 with open('/home/tom/Nextcloud/documents/gtd/projects', 'w') as f:
     for e in sorted(list(projects_list)):
         f.write(e + '\n')
+
+os.remove(LOCK_PATH)
