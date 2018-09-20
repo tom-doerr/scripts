@@ -2,9 +2,12 @@
 
 import subprocess
 import os.path
+import json
+import sys
 
+#new = json.loads(sys.stdin.readline())
+#print(json.dumps(new))
 LOCK_PATH = '/tmp/save_projects_to_list.lock'
-
 
 if os.path.isfile(LOCK_PATH):
     exit()
@@ -26,8 +29,6 @@ with open('/home/tom/Nextcloud/documents/gtd/projects', 'r') as f:
 for s in CONTENT:
     s = s.replace('\n', '')
     projects_list.add(s)
-
-print(projects_list)
 
 
 with open('/home/tom/Nextcloud/documents/gtd/projects', 'w') as f:
