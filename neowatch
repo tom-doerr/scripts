@@ -1,0 +1,12 @@
+#!/bin/sh
+
+while true
+do
+
+# printf "[%s] Output of %s:\n" "$(date)" "$*"
+# "$@" <- we don't want to do it this way, just this:
+${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines)
+sleep 0.5  # genuine Quartz movement
+ 
+done
+
