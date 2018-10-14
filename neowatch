@@ -1,20 +1,30 @@
 #!/bin/zsh
 
+exit #Since program not refreshing
+
 output_old=''
+linenumber_top=$(tput lines)
 
 while true
 do
 
 # printf "[%s] Output of %s:\n" "$(date)" "$*"
 # "$@" <- we don't want to do it this way, just this:
-output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines))
+output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $linenumber_top)
     if [[ $output_new != $output_old ]]
     then
         echo $output_new
         output_old=$output_new
     fi
 
-sleep 0.5  # genuine Quartz movement
+for i in {1..5}
+do
+    read -n 1 a
+    if [[ $a == 'j' ]]
+    then
+        let "linenumber_top += 1"
+    fi
+done
  
 done
 
