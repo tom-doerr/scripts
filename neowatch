@@ -7,7 +7,7 @@ do
 
 # printf "[%s] Output of %s:\n" "$(date)" "$*"
 # "$@" <- we don't want to do it this way, just this:
-output_new=$(stty cols 120 && ${SHELL-/bin/zsh} -c "stty cols 120 && $*" | head -n $(tput lines))
+output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines))
     if [[ $output_new != $output_old ]]
     then
         echo $output_new
