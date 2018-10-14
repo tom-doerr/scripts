@@ -1,11 +1,19 @@
-#!/bin/sh
+#!/bin/zsh
+
+output_old=''
 
 while true
 do
 
 # printf "[%s] Output of %s:\n" "$(date)" "$*"
 # "$@" <- we don't want to do it this way, just this:
-${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines)
+output_new=$(stty cols 120 && ${SHELL-/bin/zsh} -c "stty cols 120 && $*" | head -n $(tput lines))
+    if [[ $output_new != $output_old ]]
+    then
+        echo $output_new
+        output_old=$output_new
+    fi
+
 sleep 0.5  # genuine Quartz movement
  
 done
