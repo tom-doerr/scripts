@@ -10,6 +10,7 @@ do
 output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines))
     if [[ $output_new != $output_old ]]
     then
+        clear
         echo $output_new
         output_old=$output_new
     fi
