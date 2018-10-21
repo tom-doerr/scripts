@@ -5,14 +5,16 @@ output_old=''
 while true
 do
 
-# printf "[%s] Output of %s:\n" "$(date)" "$*"
-# "$@" <- we don't want to do it this way, just this:
-output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $(tput lines))
-    if [[ $output_new != $output_old ]]
-    then
-        echo $output_new
-        output_old=$output_new
-    fi
+    (( lines_from_top_num = $(tput lines) * $(cat $neowatch_page_number_file_path) ))
+
+    # printf "[%s] Output of %s:\n" "$(date)" "$*"
+    # "$@" <- we don't want to do it this way, just this:
+    output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $lines_from_top_num)
+        if [[ $output_new != $output_old ]]
+        then
+            echo $output_new
+            output_old=$output_new
+        fi
 
 sleep 0.5  # genuine Quartz movement
  
