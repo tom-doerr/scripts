@@ -1,30 +1,73 @@
 #!/bin/zsh
 
-exit #Since program not refreshing
+#exit #Since program not refreshing
 
-output_old=''
+
 linenumber_top=$(tput lines)
 
+neowatch_print() {
+
+    output_old=''
+
+    while true
+    do
+
+    # printf "[%s] Output of %s:\n" "$(date)" "$*"
+    # "$@" <- we don't want to do it this way, just this:
+    output_new="$(${SHELL-/bin/bash} -c "$@" | head -n $linenumber_top)"
+        if [[ $output_new != $output_old ]]
+        then
+            echo $output_new
+            output_old=$output_new
+        fi
+
+    done
+}
+
+neowatch_print_backup() {
+
+    output_old=''
+
+    while true
+    do
+
+    # printf "[%s] Output of %s:\n" "$(date)" "$*"
+    # "$@" <- we don't want to do it this way, just this:
+    output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $@" | head -n $linenumber_top)
+        if [[ $output_new != $output_old ]]
+        then
+            echo $output_new
+            output_old=$output_new
+        fi
+
+    done
+}
+
+
+
+
+test_fun() {
+    while true
+    do
+            echo $@
+            sleep 1
+    done
+}
+
+
+input_key=''
 while true
 do
-
-# printf "[%s] Output of %s:\n" "$(date)" "$*"
-# "$@" <- we don't want to do it this way, just this:
-output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $linenumber_top)
-    if [[ $output_new != $output_old ]]
+    neowatch_print $* &
+    read -n 1 input_key
+    echo " $input_key"
+    kill $!
+    if [[ $input_key == 'j' ]]
     then
-        echo $output_new
-        output_old=$output_new
-    fi
-
-for i in {1..5}
-do
-    read -n 1 a
-    if [[ $a == 'j' ]]
-    then
-        let "linenumber_top += 1"
+        let "linenumber_top += +1"
+        neowatch_print $* &
+        echo $linenumber_top
     fi
 done
  
-done
 
