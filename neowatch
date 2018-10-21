@@ -4,8 +4,10 @@ output_old=''
 
 while true
 do
-
-    (( lines_from_top_num = $(tput lines) * $(cat $neowatch_page_number_file_path) ))
+    if [[ $(cat $neowatch_page_number_file_path) > -1 ]]
+    then
+        (( lines_from_top_num = (( $(tput lines) - 1 )) * $(cat $neowatch_page_number_file_path) ))
+    fi
 
     # printf "[%s] Output of %s:\n" "$(date)" "$*"
     # "$@" <- we don't want to do it this way, just this:
@@ -16,7 +18,7 @@ do
             output_old=$output_new
         fi
 
-sleep 0.5  # genuine Quartz movement
+sleep 0.1  # genuine Quartz movement
  
 done
 
