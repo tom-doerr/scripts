@@ -4,6 +4,7 @@ START_TIME=1000
 END_TIME=1800
 TELEGRAM_MESSAGE_TO_SEND='prof_reminder: Break lasts for more than 15mins'
 SLEEP_TIME_BETWEEN_MESSAGES=15
+SLEEP_BETWEEN_CHECKS=10
 
 
 
@@ -18,6 +19,7 @@ do
             sleep $SLEEP_TIME_BETWEEN_MESSAGES
         fi
     fi
+    sleep $SLEEP_BETWEEN_CHECKS
 done
 
 
