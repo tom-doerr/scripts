@@ -10,12 +10,14 @@ SLEEP_BETWEEN_CHECKS=10
 
 while true
 do
-    if (( "X$(date --date 'now' +%H%M)" > $START_TIME )) && (( "X$(date --date 'now' +%H%M)" < $END_TIME ))
+    time_with_leading_zero=$(date --date 'now' +%H%M)
+    time_without_leading_zero=${time_with_leading_zero#0}
+    if (( $time_without_leading_zero > $START_TIME )) && (( $time_without_leading_zero < $END_TIME ))
     then
         timew_output=$(timew su $(date --date "15 minutes ago" +%H%M) - tomorrow prof | tail -2 | head -1)
-        if [[ $timew_output == *"No filtered data found in rannge"* ]]
+        if [[ $timew_output == *"No filtered data found in the range"* ]]
         then
-            telegram-send $TELEGRAM_MESSAGE_TO_SEND
+            telegram-send "$TELEGRAM_MESSAGE_TO_SEND"
             sleep $SLEEP_TIME_BETWEEN_MESSAGES
         fi
     fi
