@@ -15,10 +15,17 @@ do
     time_without_leading_zero=${time_with_leading_zero#0}
     if (( $time_without_leading_zero > $START_TIME )) && (( $time_without_leading_zero < $END_TIME ))
     then
-        timew_output_prof=$(timew su $(date --date "15 minutes ago" +%H%M) - tomorrow prof | tail -2 | head -1)
-        timew_output_schlafen=$(timew su $(date --date "15 minutes ago" +%H%M) - tomorrow schlafen | tail -2 | head -1)
+        send_reminder=true
+        for e in {prof,schlafen,morgens}
+        do
+            timew_output=$(timew su $(date --date "15 minutes ago" +%H%M) - tomorrow $e | tail -2 | head -1)
+            if [[ $timew_output != *$NO_DATA_TEXT* ]]
+            then
+                send_reminder=false
+            fi
+        done
 
-        if [[ $timew_output_prof == *$NO_DATA_TEXT* ]] && [[ $timew_output_schlafen == *$NO_DATA_TEXT* ]]
+        if $send_reminder
         then
             telegram-send "$TELEGRAM_MESSAGE_TO_SEND"
             sleep $SLEEP_TIME_BETWEEN_MESSAGES
