@@ -13,7 +13,7 @@ while true
 do
     time_with_leading_zero=$(date --date 'now' +%H%M)
     time_without_leading_zero=${time_with_leading_zero#0}
-    if (( $time_without_leading_zero > $START_TIME )) && (( $time_without_leading_zero < $END_TIME ))
+    if [[ $(date +%u) != "7" ]] && (( $time_without_leading_zero > $START_TIME )) && (( $time_without_leading_zero < $END_TIME ))
     then
         send_reminder=true
         for e in {prof,schlafen,morgens}
