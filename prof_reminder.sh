@@ -17,7 +17,7 @@ do
     if [[ $(date +%u) != "7" ]] && (( $time_without_leading_zeros > $START_TIME )) && (( $time_without_leading_zeros < $END_TIME ))
     then
         send_reminder=true
-        for e in {prof,schlafen,morgens,buch}
+        for e in {prof,schlafen,morgens,buch,psy,friseur,fitness}
         do
             timew_output=$(timew su $(date --date "15 minutes ago" +%H%M) - tomorrow $e | tail -2 | head -1)
             if [[ $timew_output != *$NO_DATA_TEXT* ]]
