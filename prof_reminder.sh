@@ -14,6 +14,7 @@ do
     time_with_leading_zero=$(date --date 'now' +%H%M)
     time_without_leading_zero=${time_with_leading_zero#0}
     time_without_leading_zeros=${time_without_leading_zero#0}
+    time_without_leading_zeros=${time_without_leading_zeros#0}
     if [[ $(date +%u) != "7" ]] && (( $time_without_leading_zeros > $START_TIME )) && (( $time_without_leading_zeros < $END_TIME ))
     then
         send_reminder=true
