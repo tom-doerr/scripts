@@ -42,7 +42,6 @@ for goal in due_goals:
 
 
 
-print('\n\n\n')
 for e in due_goals_hm:
     print('{}    {}  {}  {}'.format(*e))
 
