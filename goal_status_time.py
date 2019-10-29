@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import os
 import re 
+import datetime
 
 # source: https://stackoverflow.com/questions/10742296/python-time-conversion-hms-to-seconds
 def hms_to_seconds(t):
@@ -22,8 +23,27 @@ for e in bms_out.split('\n'):
         due_goals[-1].append(seconds_done / 3600)
         due_goals[-1].append(due_goals[-1][-1] - due_goals[-1][-2])
 
+due_goals_hm = []
+for goal in due_goals:
+    hm_time = [goal[0]]
+    for hour_time_index in range(1, 4):
+        time_seconds = int(goal[hour_time_index] * 3600)
+        if time_seconds < 0:
+            time_seconds *= -1
+            sign = '-'
+        else:
+            sign = ''
+
+        # source: https://stackoverflow.com/questions/775049/how-do-i-convert-seconds-to-hours-minutes-and-second://stackoverflow.com/questions/775049/how-do-i-convert-seconds-to-hours-minutes-and-seconds  
+        m, s = divmod(time_seconds, 60)
+        h, m = divmod(m, 60)
+        hm_time.append(sign + f'{h:d}:{m:02d}')
+    due_goals_hm.append(hm_time)
+
+
+
 print('\n\n\n')
-for e in due_goals:
-    print('{}    {:3.2f}  {:3.2f}  {:3.2f}'.format(*e))
+for e in due_goals_hm:
+    print('{}    {}  {}  {}'.format(*e))
 
     
