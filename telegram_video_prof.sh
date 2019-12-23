@@ -15,7 +15,7 @@ currently_tracking_video() {
 to_much_video() {
     h_prof=$(get_time_h_day prof)
     h_video=$(get_time_h_day video)
-    [[ $(($h_video * 2 - 0.25)) > $h_prof ]] 
+    [[ $((($h_video - 0.25) * 2)) > $h_prof ]] 
 }
 
 while true
