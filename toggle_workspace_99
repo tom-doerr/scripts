@@ -1,0 +1,14 @@
+#!/bin/bash
+
+get_i3_workspace_id() {
+    i3-msg -t get_workspaces \
+  | jq '.[] | select(.focused==true).name' \
+  | cut -d"\"" -f2
+}
+
+if [[ $(get_i3_workspace_id) == "99" ]]
+then
+    i3-msg workspace back_and_forth
+else
+    i3-msg workspace 99
+fi
