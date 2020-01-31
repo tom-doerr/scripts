@@ -32,5 +32,5 @@ do
         fi
 
     fi
-    sleep 2
+    sleep 10
 done
