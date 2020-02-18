@@ -15,7 +15,8 @@ currently_tracking_video() {
 to_much_video() {
     h_prof=$(get_time_h_day prof)
     h_video=$(get_time_h_day video)
-    [[ $((($h_video - 0.25) * 4)) > $h_prof ]] 
+    h_video_2=$((($h_video - 0.25) * 4))
+    (( $(echo "$h_video_2 > $h_prof" | bc -l) ))
 }
 
 while true
