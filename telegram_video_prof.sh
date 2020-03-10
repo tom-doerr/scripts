@@ -2,10 +2,6 @@
 
 source ~/.zshrc
 
-get_time_h_day() {
-    hms_to_hours $(timew su $1 | tail -2 | head -1 | { read first rest; echo $first; })
-}
-
 currently_tracking_video() {
     tw_output=$(timew)
     tracking_line=$(printf "$tw_output" | awk 'NR==1')  
