@@ -10,7 +10,7 @@ currently_tracking_video() {
 
 to_much_video() {
     remaining_time_video=$(vtime)
-    (( $(echo "$remaining_time_video > 0" | bc -l) ))
+    (( $(echo "$remaining_time_video < 0" | bc -l) ))
 }
 
 while true
