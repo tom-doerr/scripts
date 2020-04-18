@@ -17,7 +17,7 @@ while true
 do
     if currently_tracking_video
     then
-        if to_much_video
+        if to_much_video && [[ ! $(date --date now +%a) == 'Sat' ]]
         then
             h_prof=$(get_time_h_day prof)
             h_prof_rounded=$(printf "%.2f\n" $h_prof)
