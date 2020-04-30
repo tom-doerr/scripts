@@ -1,3 +1,3 @@
 #!/bin/bash
 
-if [[ $(uname --nodename) == 'tom-Desktop-18' ]]; then kitty zsh; else kitty ssh -X -t gard zsh; fi 
+if [[ $(uname --nodename) == 'tom-Desktop-18' ]] || [[ $(uname --nodename) == 'desktop-20' ]]; then kitty --single-instance zsh; else kitty --single-instance ssh -X -t gard zsh; fi 
