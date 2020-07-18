@@ -2,7 +2,13 @@
 # Start with 'custom' as argument in order to forward 444 to 443
 
 remote_port=$1
-local_port=$1
+
+if [[ $2 != "" ]]
+then
+    local_port=$2
+else
+    local_port=$1
+fi
 
 if [ "$1" == "custom" ]
 then
