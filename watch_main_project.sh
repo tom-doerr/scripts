@@ -1,2 +1,14 @@
 #!/bin/bash
-while true; do clear; echo ""; echo -n "  " &&head -n 1 ~/main_project; sleep 60; done      
+IFS=$'\n'
+while true 
+do 
+    clear
+    echo ""
+    sub_goals="$(head -n 3 ~/main_project)"
+    for e in $sub_goals
+    do
+        echo -n "  "
+        echo $e
+    done
+    sleep 60
+done      

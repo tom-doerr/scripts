@@ -22,7 +22,7 @@ try:
     if NEW['status'] == 'completed' and 'project' in NEW:
         first_loop = True
         while True:
-            process = subprocess.Popen(['task', 'project:'+NEW['project']], \
+            process = subprocess.Popen(['task', 'project.is:'+NEW['project']], \
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = process.communicate()
             if out == b'':
