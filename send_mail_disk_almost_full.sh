@@ -18,5 +18,5 @@ do
         echo "" | neomutt -s "Only $(get_free_disk_space -h) free on Desktop." $RECEIVER_EMAIL_ADDRESS
         sleep 12h
     fi
-    sleep 1
+    sleep 60
 done
