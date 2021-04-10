@@ -36,7 +36,7 @@ do
 
 
     num_lines_old=$(get_num_lines_file)
-    if (( current_time_seconds < MAX_SECONDS_TIME_OF_DAY )) && (( time_difference_seconds < SECONDS_BEFORE_SCHLAFEN_TO_REMIND ))
+    if (( current_time_seconds < MAX_SECONDS_TIME_OF_DAY )) && (( time_difference_seconds < SECONDS_BEFORE_SCHLAFEN_TO_REMIND )) && [[ ! $(timew) =~ "schlafen" ]] && [[ ! $(timew) =~ "bettzeit" ]] 
     then
         while true
         do
