@@ -19,7 +19,8 @@ get_num_lines_file() {
 
 while true
 do
-    last_schlafen_start=$(timew su $(date --date "7 hours ago" +%Y-%m-%d)T05:00:00 - tomorrow schlafen | 
+    relevant_date=$(date --date "7 hours ago" +%Y-%m-%d)
+    last_schlafen_start=$(timew su "$relevant_date"T00:00:00 - "$relevant_date"T07:00:00 schlafen | 
         tail -n4 |
         head -n1 |
         awk '{print $3}')
