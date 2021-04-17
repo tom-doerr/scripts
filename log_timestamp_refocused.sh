@@ -4,8 +4,10 @@ set -x
 
 OBJ_INDICATOR_FILENAME='/tmp/had_no_obj_tag'
 
-
-
+if [[ $(hostname) == "tom-ThinkPad-L460-18" ]]
+then
+    ssh gard '/home/tom/git/scripts/log_timestamp_refocused.sh'
+fi
 
 if ! [[ $(timew) =~ ' obj' ]]
 then
