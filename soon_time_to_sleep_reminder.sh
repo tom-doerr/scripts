@@ -23,7 +23,7 @@ do
     last_schlafen_start=$(timew su "$relevant_date"T00:00:00 - "$relevant_date"T07:00:00 schlafen | 
         tail -n4 |
         head -n1 |
-        awk '{print $3}')
+        awk '{print $(NF - 3)}')
     echo "last_schlafen_start: " "$last_schlafen_start"
     schlafen_start_seconds=$(get_time_in_seconds $last_schlafen_start)
     echo "schlafen_start_seconds: " "$schlafen_start_seconds"
