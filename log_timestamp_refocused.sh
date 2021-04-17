@@ -4,6 +4,9 @@ set -x
 
 OBJ_INDICATOR_FILENAME='/tmp/had_no_obj_tag'
 
+
+
+
 if ! [[ $(timew) =~ ' obj' ]]
 then
     touch $OBJ_INDICATOR_FILENAME
