@@ -6,7 +6,7 @@ LOG_DIR="/home/tom/git/refocused_timestamps_log"
 
 print_times_refocused() {
     start_time_ago=$1
-    awk '$0>'$(date -d "$start_time_ago ago" +%s) log | wc -l
+    awk '$0>'$(date -d "$start_time_ago ago" +%s) log | grep -v -E '=|>|<' | wc -l
 }
 
 cd $LOG_DIR
