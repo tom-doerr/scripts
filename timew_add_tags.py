@@ -8,7 +8,10 @@ with open(str(Path.home()) + '/.task/hooks/tags.config', 'r') as tag_config_file
     TAG_CONFIG = json.load(tag_config_file)
 
 new = []
-for tag1 in sys.argv[1:]:
+for tag in sys.argv[1:]:
+    new.append(tag)
+
+for tag1 in new:
     if tag1 in TAG_CONFIG:
         tags_to_add = TAG_CONFIG[tag1]
         if type(tags_to_add) == str:
