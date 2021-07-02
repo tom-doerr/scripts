@@ -5,7 +5,13 @@ get_diff_times() {
     string2="$2"
     StartDate=$(date -u -d "$string1" +"%s")
     FinalDate=$(date -u -d "$string2" +"%s")
-    date -u -d "0 $FinalDate sec - $StartDate sec" +"%H:%M:%S"
+    if (( $StartDate < $FinalDate ))
+    then
+        date -u -d "0 $FinalDate sec - $StartDate sec" +"%H:%M:%S"
+    else
+        echo "-"$(date -u -d "0 $StartDate sec - $FinalDate sec" +"%H:%M:%S")
+    fi
+
 }
 
 
@@ -31,8 +37,13 @@ do
         time1="$word"
     else
         #echo calc
-        time_diff=$(get_diff_times "$time1:00" "$word:00")
-        printf "  ${time_diff::-3}  $time1  $word  "
+        if [[ $time1 == "✔" ]]
+        then
+            printf "  - - - "
+        else
+            time_diff=$(get_diff_times "$time1:00" "$word:00")
+            printf "  ${time_diff::-3}  $time1  $word  "
+        fi
         unset time1
     fi
 done
