@@ -12,7 +12,7 @@ unalias_function_or_alias() {
 }
 
 
-for i in {1..10} d w m y q
+for i in {1..10} w m y q
 do
     unalias_function_or_alias $i
     source <(echo "$i(){wait_task $i}")
@@ -49,4 +49,10 @@ e() {
     # Tmux terminated currently selected pane.
     tmux kill-pane
     exec zsh
+}
+
+d() {
+    first_task_id=$(get_first_task 'review_bucket_items')
+    task done $first_task_id 
+
 }
