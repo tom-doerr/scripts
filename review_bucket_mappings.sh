@@ -17,6 +17,7 @@ do
     unalias_function_or_alias $i
     source <(echo "$i(){wait_task $i}")
 done
+cd ~
 
 
 wait_task() {
@@ -39,4 +40,13 @@ wait_task() {
         first_task_id=$(get_first_task 'review_bucket_items')
         task $first_task_id mod wait:1"$command"
     fi
+}
+
+
+e() {
+    # Go to tmux-pane below.
+    tmux select-pane -D
+    # Tmux terminated currently selected pane.
+    tmux kill-pane
+    exec zsh
 }
