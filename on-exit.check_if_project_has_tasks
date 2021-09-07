@@ -20,7 +20,6 @@ except:
     sys.exit(0)
 try:
     if NEW['status'] == 'completed' and 'project' in NEW:
-        first_loop = True
         while True:
             process = subprocess.Popen(['task', 'project.is:'+NEW['project']], \
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -35,11 +34,6 @@ try:
                     tags = []
                     subprocess.run(new_task_no_tags)
                 print('Added "Add task" task')
-                if first_loop:
-                    first_loop = False
-                    sleep(0.5)
-                else:
-                    sleep(1)
             else:
                 break
 except Exception as e:
