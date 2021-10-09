@@ -11,7 +11,7 @@ do
 
     # printf "[%s] Output of %s:\n" "$(date)" "$*"
     # "$@" <- we don't want to do it this way, just this:
-    output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $*" | head -n $lines_from_top_num)
+    output_new=$(${SHELL-/bin/sh} -c "stty cols 120 && $* &> /dev/stdout" | head -n $lines_from_top_num)
         if [[ $output_new != $output_old ]]
         then
             clear
