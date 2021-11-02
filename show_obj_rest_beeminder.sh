@@ -23,7 +23,7 @@ get_diff_times() {
 
 echo
 time1=""
-for word in  $(bm status | grep obj | sort | awk '{print "  "$2" "$NF" "$1}') 
+for word in  $(bm status 2>/dev/null | grep obj | sort | awk '{print "  "$2" "$NF" "$1}') 
 do
     if [[ $word =~ user ]]
     then
@@ -47,7 +47,7 @@ do
         unset time1
     fi
 done
-bm status
+bm status 2>/dev/null
 
 
 
