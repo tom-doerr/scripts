@@ -48,7 +48,7 @@ e() {
     tmux select-pane -D
     # Tmux terminated currently selected pane.
     tmux kill-pane
-    exec zsh
+    exit
 }
 
 d() {
