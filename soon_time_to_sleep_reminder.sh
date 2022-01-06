@@ -20,7 +20,8 @@ get_num_lines_file() {
 while true
 do
     relevant_date=$(date --date "7 hours ago" +%Y-%m-%d)
-    last_schlafen_start=$(timew su "$relevant_date"T00:00:00 - "$relevant_date"T07:00:00 schlafen | 
+    day_before_relevant_date=$(date --date "8 hours ago" +%Y-%m-%d)
+    last_schlafen_start=$(timew su "$day_before_relevant_date"T21:00:00 - "$relevant_date"T07:00:00 schlafen | 
         tail -n4 |
         head -n1 |
         awk '{print $(NF - 3)}')
