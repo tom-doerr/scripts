@@ -4,7 +4,7 @@ while true
 do 
     clear
     echo ""
-    sub_goals="$(head -n 4 ~/main_project)"
+    sub_goals="$(head -n 6 ~/main_project)"
     for e in $sub_goals
     do
         echo -n "  "
