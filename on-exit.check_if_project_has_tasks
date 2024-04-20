@@ -21,7 +21,7 @@ except:
 try:
     if NEW['status'] == 'completed' and 'project' in NEW:
         while True:
-            process = subprocess.Popen(['task', 'project.is:'+NEW['project']], \
+            process = subprocess.Popen(['task', 'rc.context=none', 'project.is:'+NEW['project'], 'report1'], \
                     stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = process.communicate()
             if out == b'':
