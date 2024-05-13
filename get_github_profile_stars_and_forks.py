@@ -21,6 +21,8 @@ The url of the website from which to get the number is https://github.com/tom-do
 import requests
 from bs4 import BeautifulSoup
 import argparse
+import datetime
+import time
 
 
 # Get repo name.
@@ -39,6 +41,11 @@ soup = BeautifulSoup(r.text, 'html.parser')
 links = soup.find_all("a", {"class": "pinned-item-meta"})
 # also get the correspondeng hrefs.
 links = soup.find_all("a", {"class": "pinned-item-meta"}, href=True)
+print('\n================================')
+# print the current unix timestamp.
+print('Timestamp: {:%Y-%b-%d %H:%M:%S}'.format(datetime.datetime.now()))
+# Print the unix time in seconds.
+print('Timestamp in seconds: {}'.format(time.time()))
 
 # print all links
 for link in links:
@@ -46,5 +53,4 @@ for link in links:
     print(link['href'])
 
 
-print('\n================================')
 
