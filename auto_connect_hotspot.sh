@@ -1,8 +1,5 @@
 #!/bin/bash
 
-
-#!/bin/bash
-
 SSID="Vorname's Galaxy Z Fold3 5G"
 INTERVAL=1  # check every 60 seconds
 
