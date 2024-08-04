@@ -54,7 +54,6 @@ while read -r line; do
 done < <(bm status 2>/dev/null | grep -E '(obj|main|ai)' | sort)
 echo
 echo "----------------------------------------"
-bm status 2>/dev/null | grep -E '(obj|main|ai)'
 
 
 
