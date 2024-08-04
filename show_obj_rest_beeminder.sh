@@ -18,7 +18,7 @@ while read -r line; do
         time_diff=$(date -u -d @$(($(date -d "$time2" +%s) - $(date -d "$time1" +%s))) +%H:%M:%S)
         printf "  %-8s %-6s %-6s " "$time_diff" "$time1" "$time2"
     fi
-    printf "%-15s %s %s\n" "$goal" "$value" "$rest"
+    printf "%-20s %s %s\n" "$goal" "$value" "$rest"
 done < <(bm status 2>/dev/null | grep -E '(obj|main|ai)' | sort)
 echo
 echo "----------------------------------------"
