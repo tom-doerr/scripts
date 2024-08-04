@@ -31,6 +31,7 @@ get_diff_times() {
 
 #get_diff_times 01:00:00 02:03:00
 
+echo "----------------------------------------"
 echo
 time1=""
 while read -r line; do
@@ -51,6 +52,8 @@ while read -r line; do
     fi
     echo "$goal"
 done < <(bm status 2>/dev/null | grep -E '(obj|main|ai)' | sort)
+echo
+echo "----------------------------------------"
 bm status 2>/dev/null | grep -E '(obj|main|ai)'
 
 
