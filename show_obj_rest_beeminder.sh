@@ -3,15 +3,21 @@
 get_diff_times() {
     string1="$1"
     string2="$2"
-    StartDate=$(date -u -d "$string1" +"%s")
-    FinalDate=$(date -u -d "$string2" +"%s")
-    if (( $StartDate < $FinalDate ))
-    then
+    if [[ "$string1" == "days" || "$string2" == "days" ]]; then
+        echo "N/A"
+        return
+    fi
+    StartDate=$(date -u -d "$string1" +"%s" 2>/dev/null)
+    FinalDate=$(date -u -d "$string2" +"%s" 2>/dev/null)
+    if [[ -z "$StartDate" || -z "$FinalDate" ]]; then
+        echo "Invalid"
+        return
+    fi
+    if (( StartDate < FinalDate )); then
         date -u -d "0 $FinalDate sec - $StartDate sec" +"%H:%M:%S"
     else
         echo "-"$(date -u -d "0 $StartDate sec - $FinalDate sec" +"%H:%M:%S")
     fi
-
 }
 
 
@@ -21,33 +27,28 @@ get_diff_times() {
 
 #get_diff_times 01:00:00 02:03:00
 
+echo "----------------------------------------"
 echo
-time1=""
-for word in  $(bm status 2>/dev/null | grep -E '(obj|main|ai3)' | sort | awk '{print "  "$2" "$NF" "$1}')
-do
-    if [[ $word =~ user ]]
-    then
-        echo $word
+while read -r line; do
+    if [[ $line =~ user ]]; then
+        echo "$line"
         continue
     fi
-    word=${word/+/}
-    if [[ $time1 == "" ]]
-    then
-        #echo set
-        time1="$word"
+    
+    read goal time1 time2 value rest <<< $(echo "$line" | awk '{print $1, $2, $3, $4, $5, $6, $7, $8}')
+    time1=${time1/+/}
+    time2=${time2/+/}
+    
+    if [[ "$time1" == "✔" ]]; then
+        printf "  %-8s %-6s %-6s " "✔" "$time1" "$time2"
     else
-        #echo calc
-        if [[ $time1 == "✔" ]]
-        then
-            printf "  - - - "
-        else
-            time_diff=$(get_diff_times "$time1:00" "$word:00")
-            printf "  ${time_diff::-3}  $time1  $word  "
-        fi
-        unset time1
+        time_diff=$(get_diff_times "$time1" "$time2")
+        printf "  %-8s %-6s %-6s " "$time_diff" "$time1" "$time2"
     fi
-done
-bm status 2>/dev/null
+    printf "%-20s %s %s\n" "$goal" "$value" "$rest"
+done < <(bm status 2>/dev/null | grep -E '(obj|main|ai3|uni)' | sort)
+echo
+echo "----------------------------------------"
 
 
 
