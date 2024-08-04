@@ -50,8 +50,8 @@ while read -r line; do
         printf "  %-8s %-6s %-6s " "$time_diff" "$time1" "$time2"
     fi
     echo "$goal"
-done < <(bm status 2>/dev/null | grep -E '(obj|main)' | sort)
-bm status 2>/dev/null
+done < <(bm status 2>/dev/null | grep -E '(obj|main|ai)' | sort)
+bm status 2>/dev/null | grep -E '(obj|main|ai)'
 
 
 
