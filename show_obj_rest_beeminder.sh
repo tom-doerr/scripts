@@ -13,9 +13,12 @@ while read -r line; do
     time2=${time2/+/}
     
     if [[ "$time1" == "✔" ]]; then
-        printf "  - - - "
+        printf "  %-8s %-6s %-6s " "✔" "$time1" "$time2"
     else
-        time_diff=$(date -u -d @$(($(date -d "$time2" +%s) - $(date -d "$time1" +%s))) +%H:%M:%S)
+        time1_seconds=$(date -d "$time1" +%s)
+        time2_seconds=$(date -d "$time2" +%s)
+        time_diff_seconds=$((time2_seconds - time1_seconds))
+        time_diff=$(date -u -d @"$time_diff_seconds" +%H:%M:%S)
         printf "  %-8s %-6s %-6s " "$time_diff" "$time1" "$time2"
     fi
     printf "%-20s %s %s\n" "$goal" "$value" "$rest"
