@@ -40,7 +40,7 @@ while read -r line; do
         continue
     fi
     
-    read time1 time2 goal <<< $(echo "$line" | awk '{print $2, $3, $1}')
+    read goal time1 time2 value rest <<< $(echo "$line" | awk '{print $1, $2, $3, $4, $5, $6, $7, $8}')
     time1=${time1/+/}
     time2=${time2/+/}
     
@@ -50,7 +50,7 @@ while read -r line; do
         time_diff=$(get_diff_times "$time1" "$time2")
         printf "  %-8s %-6s %-6s " "$time_diff" "$time1" "$time2"
     fi
-    echo "$goal"
+    printf "%-15s %s %s\n" "$goal" "$value" "$rest"
 done < <(bm status 2>/dev/null | grep -E '(obj|main|ai)' | sort)
 echo
 echo "----------------------------------------"
