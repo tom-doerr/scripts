@@ -4,8 +4,8 @@ get_diff_times() {
     string1="$1"
     string2="$2"
     
-    # Check if either input is "days"
-    if [[ "$string1" == "days" || "$string2" == "days" ]]; then
+    # Check if either input is "day" or "days"
+    if [[ "$string1" == "day" || "$string1" == "days" || "$string2" == "day" || "$string2" == "days" ]]; then
         echo "N/A"
         return
     fi
@@ -44,7 +44,7 @@ do
         #echo calc
         if [[ $time1 == "✔" ]]; then
             printf "  - - - "
-        elif [[ $time1 == "days" || $word == "days" ]]; then
+        elif [[ $time1 == "day" || $time1 == "days" || $word == "day" || $word == "days" ]]; then
             printf "  N/A  $time1  $word  "
         else
             time_diff=$(get_diff_times "$time1:00" "$word:00")
