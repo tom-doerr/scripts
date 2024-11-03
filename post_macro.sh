@@ -17,6 +17,7 @@ copy_url_paste_right() {
     xdotool key n
     sleep 0.1  # Small delay to ensure 'n' is processed
     xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab
+    xdotool key Return BackSpace
     sleep $(random_float 0.2 0.5)  # Random delay before paste
     xdotool key ctrl+v
 }
