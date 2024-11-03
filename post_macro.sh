@@ -45,6 +45,13 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     sleep $(random_float 0.2 0.5)  # Random delay before paste
     xdotool key ctrl+v
+    sleep $XDOTOOL_DELAY
+    
+    # Final Shift+Tab sequence
+    for i in {1..3}; do
+        xdotool key shift+Tab
+        sleep 0.1
+    done
 }
 
 # Function to focus right
