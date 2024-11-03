@@ -31,19 +31,5 @@ focus_right() {
     fi
 }
 
-# Main script
-case "$1" in
-    "right")
-        focus_right
-        ;;
-    "paste-url")
-        copy_url_paste_right
-        ;;
-    *)
-        echo "Usage: $0 [right|paste-url]"
-        echo "Available commands:"
-        echo "  right     - Focus window to the right"
-        echo "  paste-url - Copy URL and paste in right window"
-        exit 1
-        ;;
-esac
+# Execute the copy URL and paste function
+copy_url_paste_right
