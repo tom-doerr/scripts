@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Function to get random float between min and max
+random_float() {
+    awk -v min=$1 -v max=$2 'BEGIN{srand(); print min+rand()*(max-min)}'
+}
+
 # Function to copy URL and paste in next window
 copy_url_paste_right() {
     # Copy URL from current window
@@ -8,9 +13,10 @@ copy_url_paste_right() {
     # Focus right
     focus_right
 
-    # Press 'n' and paste
+    # Press 'n' and paste with random delay
     xdotool key n
     sleep 0.1  # Small delay to ensure 'n' is processed
+    sleep $(random_float 0.2 0.5)  # Random delay before paste
     xdotool key ctrl+v
 }
 
