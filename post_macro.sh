@@ -19,6 +19,8 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
+    xdotool key shift+Tab shift+Tab shift+Tab
+    sleep $XDOTOOL_DELAY
 
     # Move back left to copy URL
     i3-msg focus left
