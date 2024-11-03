@@ -1,5 +1,19 @@
 #!/bin/bash
 
+# Function to copy URL and paste in next window
+copy_url_paste_right() {
+    # Copy URL from current window
+    xdotool key ctrl+l ctrl+c
+
+    # Focus right
+    focus_right
+
+    # Press 'n' and paste
+    xdotool key n
+    sleep 0.1  # Small delay to ensure 'n' is processed
+    xdotool key ctrl+v
+}
+
 # Function to focus right
 focus_right() {
     # Get the current window ID
@@ -22,10 +36,14 @@ case "$1" in
     "right")
         focus_right
         ;;
+    "paste-url")
+        copy_url_paste_right
+        ;;
     *)
-        echo "Usage: $0 [right]"
-        echo "Available movements:"
-        echo "  right    - Focus window to the right"
+        echo "Usage: $0 [right|paste-url]"
+        echo "Available commands:"
+        echo "  right     - Focus window to the right"
+        echo "  paste-url - Copy URL and paste in right window"
         exit 1
         ;;
 esac
