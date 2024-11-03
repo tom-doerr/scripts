@@ -33,7 +33,7 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
 
     # Continue with tabs and final paste
-    xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab
+    xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab
     sleep $XDOTOOL_DELAY
     xdotool key Return
     sleep $XDOTOOL_DELAY
