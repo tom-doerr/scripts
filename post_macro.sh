@@ -13,9 +13,10 @@ copy_url_paste_right() {
     # Focus right
     focus_right
 
-    # Press 'n', tab 9 times, and paste with random delay
+    # Press 'n', enter, tab 9 times, and paste with random delay
     xdotool key n
     sleep 0.1  # Small delay to ensure 'n' is processed
+    xdotool key Return
     xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab
     xdotool key Return BackSpace
     sleep $(random_float 0.2 0.5)  # Random delay before paste
