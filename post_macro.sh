@@ -19,7 +19,10 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
-    xdotool key shift+Tab shift+Tab shift+Tab
+    for i in {1..3}; do
+        xdotool key shift+Tab
+        sleep 0.1
+    done
     sleep $XDOTOOL_DELAY
 
     # Move back left to copy URL
@@ -35,7 +38,10 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
 
     # Continue with tabs and final paste
-    xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab Tab
+    for i in {1..14}; do
+        xdotool key Tab
+        sleep 0.1
+    done
     sleep $XDOTOOL_DELAY
     xdotool key Return
     sleep $XDOTOOL_DELAY
