@@ -10,21 +10,29 @@ random_float() {
 
 # Function to copy URL and paste in next window
 copy_url_paste_right() {
-    # Copy URL from current window
+    # Focus right first
+    focus_right
+    sleep $XDOTOOL_DELAY
+
+    # Press 'n' and initial paste
+    xdotool key n
+    sleep $XDOTOOL_DELAY
+    xdotool key ctrl+v
+    sleep $XDOTOOL_DELAY
+
+    # Move back left to copy URL
+    i3-msg focus left
+    sleep $XDOTOOL_DELAY
     xdotool key ctrl+l
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+c
     sleep $XDOTOOL_DELAY
 
-    # Focus right
+    # Move right again
     focus_right
     sleep $XDOTOOL_DELAY
 
-    # Press 'n', enter, tab 9 times, and paste with random delay
-    xdotool key n
-    sleep $XDOTOOL_DELAY
-    xdotool key ctrl+v
-    sleep $XDOTOOL_DELAY
+    # Continue with tabs and final paste
     xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab
     sleep $XDOTOOL_DELAY
     xdotool key Return
