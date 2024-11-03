@@ -39,6 +39,8 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+c
     sleep $XDOTOOL_DELAY
+    xdotool key Escape
+    sleep $XDOTOOL_DELAY
 
     # Move right again
     focus_right
