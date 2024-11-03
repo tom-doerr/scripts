@@ -18,6 +18,7 @@ copy_url_paste_right() {
     xdotool key n
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+v
+    sleep 0.5
     sleep $XDOTOOL_DELAY
     for i in {1..3}; do
         xdotool key shift+Tab
