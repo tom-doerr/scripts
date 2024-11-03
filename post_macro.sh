@@ -23,7 +23,7 @@ copy_url_paste_right() {
     # Press 'n', enter, tab 9 times, and paste with random delay
     xdotool key n
     sleep $XDOTOOL_DELAY
-    xdotool key minus
+    xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
     xdotool key Tab Tab Tab Tab Tab Tab Tab Tab Tab
     sleep $XDOTOOL_DELAY
