@@ -58,6 +58,8 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
+    xdotool type '"'
+    sleep $XDOTOOL_DELAY
     
     # Final Shift+Tab sequence
     for i in {1..3}; do
