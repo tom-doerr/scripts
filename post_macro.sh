@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-XDOTOOL_DELAY=0.3
+XDOTOOL_DELAY=0.15
 
 # Function to get random float between min and max
 random_float() {
@@ -19,13 +19,13 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     
     xdotool key ctrl+v
-    sleep 0.5
+    sleep 0.25
     sleep $XDOTOOL_DELAY
 
     # Continue with tabs
     for i in {1..14}; do
         xdotool key Tab
-        sleep 0.1
+        sleep 0.05
     done
     sleep $XDOTOOL_DELAY
     xdotool key Return
@@ -46,7 +46,7 @@ copy_url_paste_right() {
     # Move right again
     focus_right
     sleep $XDOTOOL_DELAY
-    sleep $(random_float 0.2 0.5)  # Random delay before paste
+    sleep $(random_float 0.1 0.25)  # Random delay before paste
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
     
