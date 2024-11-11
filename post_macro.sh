@@ -69,8 +69,8 @@ copy_url_paste_right() {
     xdotool type '"'
     sleep $XDOTOOL_DELAY
     
-    # Move cursor to the very beginning
-    xdotool key Home
+    # Move cursor to the very beginning and top
+    xdotool key ctrl+Home
     sleep $XDOTOOL_DELAY
 }
 
