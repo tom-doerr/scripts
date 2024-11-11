@@ -68,6 +68,10 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool type '"'
     sleep $XDOTOOL_DELAY
+    
+    # Move cursor to the very beginning
+    xdotool key Home
+    sleep $XDOTOOL_DELAY
 }
 
 # Function to focus right
