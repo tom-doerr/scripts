@@ -8,52 +8,28 @@ random_float() {
     awk -v min=$1 -v max=$2 'BEGIN{srand(); print min+rand()*(max-min)}'
 }
 
-# Function to copy URL and paste in next window
+# Function to paste description and format
 copy_url_paste_right() {
     # Focus right first
     focus_right
     sleep $XDOTOOL_DELAY
 
-    # Press 'n' and initial paste
+    # Press 'n' to start new post
     xdotool key n
     sleep $XDOTOOL_DELAY
-    xdotool key ctrl+v
-    sleep 0.25
-    sleep $XDOTOOL_DELAY
-
-    # Continue with tabs
-    for i in {1..14}; do
-        xdotool key Tab
-        sleep 0.05
-    done
-    sleep $XDOTOOL_DELAY
-    xdotool key Return
-    sleep $XDOTOOL_DELAY
-    xdotool key BackSpace
+    
+    # Read and type the description
+    description=$(cat /home/tom/git/x_twitter/description.txt)
+    xdotool type "$description"
     sleep $XDOTOOL_DELAY
     
-    # Move back left to copy URL
-    i3-msg focus left
-    sleep $XDOTOOL_DELAY
-    xdotool key ctrl+l
-    sleep $XDOTOOL_DELAY
-    xdotool key ctrl+c
-    sleep $XDOTOOL_DELAY
-    xdotool key Escape
-    sleep $XDOTOOL_DELAY
-
-    # Move right again
-    focus_right
-    sleep $XDOTOOL_DELAY
-    sleep $(random_float 0.1 0.25)  # Random delay before paste
-    xdotool key ctrl+v
+    # Type the additional text
+    xdotool type '" paste the text you just copied, type another "'
     sleep $XDOTOOL_DELAY
     
-    # Final Shift+Tab sequence
-    for i in {1..3}; do
-        xdotool key shift+Tab
-        sleep 0.05
-    done
+    # Move cursor to start
+    xdotool key Home
+    sleep $XDOTOOL_DELAY
 }
 
 # Function to focus right
