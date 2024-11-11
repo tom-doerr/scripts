@@ -18,13 +18,6 @@ copy_url_paste_right() {
     xdotool key n
     sleep $XDOTOOL_DELAY
     
-    # Read and type the description first
-    description=$(cat /home/tom/git/x_twitter/description.txt)
-    xdotool type "$description"
-    sleep $XDOTOOL_DELAY
-    xdotool type '" '
-    sleep $XDOTOOL_DELAY
-    
     xdotool key ctrl+v
     sleep 0.25
     sleep $XDOTOOL_DELAY
@@ -65,6 +58,15 @@ copy_url_paste_right() {
     
     # Move cursor to start
     xdotool key Home
+    sleep $XDOTOOL_DELAY
+    
+    # Read and type the description with quotes
+    description=$(cat /home/tom/git/x_twitter/description.txt)
+    xdotool type '"'
+    sleep $XDOTOOL_DELAY
+    xdotool type "$description"
+    sleep $XDOTOOL_DELAY
+    xdotool type '"'
     sleep $XDOTOOL_DELAY
 }
 
