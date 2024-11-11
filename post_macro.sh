@@ -54,11 +54,7 @@ copy_url_paste_right() {
     focus_right
     sleep $XDOTOOL_DELAY
     sleep $(random_float 0.1 0.25)  # Random delay before paste
-    xdotool type ', type another "'
-    sleep $XDOTOOL_DELAY
     xdotool key ctrl+v
-    sleep $XDOTOOL_DELAY
-    xdotool type '"'
     sleep $XDOTOOL_DELAY
     
     # Final Shift+Tab sequence
