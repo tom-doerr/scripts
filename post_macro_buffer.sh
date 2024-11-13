@@ -23,6 +23,8 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     xdotool key Return
     sleep $XDOTOOL_DELAY
+    xdotool key n
+    sleep $XDOTOOL_DELAY
     xdotool key BackSpace
     sleep $XDOTOOL_DELAY
     
