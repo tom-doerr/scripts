@@ -50,11 +50,11 @@ copy_url_paste_right() {
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
     
-    # Final Shift+Tab sequence
-    for i in {1..3}; do
-        xdotool key shift+Tab
-        sleep 0.05
-    done
+    # Move up twice
+    xdotool key Up
+    sleep $XDOTOOL_DELAY
+    xdotool key Up
+    sleep $XDOTOOL_DELAY
     
     # Move cursor to start
     xdotool key Home
