@@ -64,11 +64,17 @@ else
         exit 1
     fi
 
-    # Get highest available resolution for external display
+    # Check if 1920x1080 is available
     echo "Debug: Available modes for external display:"
-    EXTERNAL_MODES=$(xrandr | grep -A1 "^$EXTERNAL connected" | tail -n1)
+    EXTERNAL_MODES=$(xrandr | grep "^$EXTERNAL connected" -A20)
     echo "$EXTERNAL_MODES"
-    EXTERNAL_RES=$(echo "$EXTERNAL_MODES" | grep -o "[0-9]\+x[0-9]\+" | head -n1)
+    
+    if echo "$EXTERNAL_MODES" | grep -q "1920x1080.*60\.00"; then
+        EXTERNAL_RES="1920x1080"
+    else
+        # Fallback to highest available resolution
+        EXTERNAL_RES=$(echo "$EXTERNAL_MODES" | grep -o "[0-9]\+x[0-9]\+" | head -n1)
+    fi
     
     if [ -z "$EXTERNAL_RES" ]; then
         echo "No valid resolution found for external display"
