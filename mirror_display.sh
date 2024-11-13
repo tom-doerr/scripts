@@ -20,21 +20,21 @@ if [ -z "$EXTERNAL" ]; then
     exit 1
 fi
 
-# Get common resolution (1920x1080 is usually safe)
-RESOLUTION="1920x1080"
-
-# Turn off both displays first
-xrandr --output "$INTERNAL" --off
-xrandr --output "$EXTERNAL" --off
-
-# Now enable them with mirroring
-xrandr --output "$INTERNAL" --mode "$RESOLUTION" --output "$EXTERNAL" --mode "$RESOLUTION" --same-as "$INTERNAL"
-
-# If that fails, try auto mode
+# Set both displays to 1920x1080
+xrandr --output "$INTERNAL" --mode 1920x1080
 if [ $? -ne 0 ]; then
-    echo "Failed to set specific resolution, trying auto mode..."
-    xrandr --output "$INTERNAL" --auto --output "$EXTERNAL" --auto --same-as "$INTERNAL"
+    echo "Failed to set internal display resolution"
+    exit 1
 fi
+
+xrandr --output "$EXTERNAL" --mode 1920x1080
+if [ $? -ne 0 ]; then
+    echo "Failed to set external display resolution"
+    exit 1
+fi
+
+# Now mirror them
+xrandr --output "$EXTERNAL" --same-as "$INTERNAL"
 
 # Show current display status
 xrandr --current
