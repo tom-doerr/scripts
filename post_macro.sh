@@ -5,11 +5,9 @@ XDOTOOL_DELAY=0.75
 
 # Function to check for escape key
 check_escape() {
-    if xdotool getactivewindow key --delay 0 XF86LogGrabInfo; then
-        if xdotool search --sync --onlyvisible --class "XKeyCatch" getwindowname 2>/dev/null | grep -q "Escape"; then
-            notify-send "Macro aborted"
-            exit 1
-        fi
+    if xdotool getkey Escape | grep -q "keydown"; then
+        notify-send "Macro aborted"
+        exit 1
     fi
 }
 
