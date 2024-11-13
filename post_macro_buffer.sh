@@ -5,7 +5,14 @@ XDOTOOL_DELAY=0.75
 
 # Function to check for escape key
 check_escape() {
-    if xdotool getkey Escape | grep -q "keydown"; then
+    # Check if Escape is currently pressed
+    if xdotool key Escape; then
+        notify-send "Macro aborted"
+        exit 1
+    fi
+    
+    # Also check if it was just pressed
+    if xdotool getkey Escape 2>/dev/null | grep -q "keydown"; then
         notify-send "Macro aborted"
         exit 1
     fi
