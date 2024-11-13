@@ -30,28 +30,34 @@ copy_url_paste_right() {
     # Continue with tabs
     for i in {1..8}; do
         xdotool key Tab
-        sleep 0.05
+        sleep $XDOTOOL_DELAY
     done
     sleep $XDOTOOL_DELAY
     check_escape
+    
     xdotool key Return
     sleep $XDOTOOL_DELAY
+    
     xdotool key BackSpace
     sleep $XDOTOOL_DELAY
     
     # Move back left to copy URL
     i3-msg focus left
     sleep $XDOTOOL_DELAY
+    
     xdotool key ctrl+l
     sleep $XDOTOOL_DELAY
+    
     xdotool key ctrl+c
     sleep $XDOTOOL_DELAY
+    
     xdotool key Escape
     sleep $XDOTOOL_DELAY
 
     # Move right again
     focus_right
     sleep $XDOTOOL_DELAY
+    
     sleep $(random_float 0.1 0.25)  # Random delay before paste
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
