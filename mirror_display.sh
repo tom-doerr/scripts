@@ -34,11 +34,16 @@ while [[ $# -gt 0 ]]; do
 done
 
 # Get the names of connected displays
+echo "Debug: Full xrandr output:"
+xrandr
+
+echo "Debug: Searching for connected displays..."
 INTERNAL=$(xrandr | grep " connected" | grep "eDP" | cut -d" " -f1)
-EXTERNAL=$(xrandr | grep " connected" | grep -v "eDP" | cut -d" " -f1)
+EXTERNAL=$(xrandr | grep " connected" | grep -v "eDP" | grep -v "disconnected" | cut -d" " -f1)
 
 echo "Internal display: $INTERNAL"
 echo "External display: $EXTERNAL"
+echo "Debug: Number of external displays found: $(echo "$EXTERNAL" | wc -l)"
 
 if [ -z "$INTERNAL" ]; then
     echo "No internal display detected"
