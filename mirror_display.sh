@@ -77,7 +77,8 @@ else
         exit 1
     fi
 
-    # Now mirror them
+    # Position the external display and enable it
+    xrandr --output "$EXTERNAL" --pos 0x0
     xrandr --output "$EXTERNAL" --same-as "$INTERNAL"
 fi
 
