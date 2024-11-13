@@ -51,12 +51,14 @@ if [ -z "$INTERNAL" ]; then
 fi
 
 if [ "$DISCONNECT" = true ]; then
-    # Turn off external display if connected
+    # Reset displays first
+    xrandr --output "$EXTERNAL" --off
+    xrandr --output "$INTERNAL" --auto
+    
+    # Double check external display is off
     if [ ! -z "$EXTERNAL" ]; then
         xrandr --output "$EXTERNAL" --off
     fi
-    # Set internal display back to auto mode
-    xrandr --output "$INTERNAL" --auto
 else
     # Check for external display when connecting
     if [ -z "$EXTERNAL" ]; then
