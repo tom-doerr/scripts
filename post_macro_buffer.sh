@@ -3,6 +3,16 @@
 # Constants
 XDOTOOL_DELAY=0.75
 
+# Function to check for escape key
+check_escape() {
+    if xdotool getactivewindow key --delay 0 XF86LogGrabInfo; then
+        if xdotool search --sync --onlyvisible --class "XKeyCatch" getwindowname 2>/dev/null | grep -q "Escape"; then
+            notify-send "Macro aborted"
+            exit 1
+        fi
+    fi
+}
+
 # Function to get random float between min and max
 random_float() {
     awk -v min=$1 -v max=$2 'BEGIN{srand(); print min+rand()*(max-min)}'
@@ -13,6 +23,7 @@ copy_url_paste_right() {
     # Focus right first
     focus_right
     sleep $XDOTOOL_DELAY
+    check_escape
 
     # Initial paste
     xdotool key ctrl+v
