@@ -39,7 +39,7 @@ xrandr
 
 echo "Debug: Searching for connected displays..."
 INTERNAL=$(xrandr | grep " connected" | grep "eDP" | cut -d" " -f1)
-EXTERNAL=$(xrandr | grep -E " connected|1920x1080" | grep -v "eDP" | cut -d" " -f1)
+EXTERNAL=$(xrandr | grep -E " connected|1920x1080" | grep -v "eDP" | cut -d" " -f1 | tr -d '\n')
 
 echo "Internal display: $INTERNAL"
 echo "External display: $EXTERNAL"
