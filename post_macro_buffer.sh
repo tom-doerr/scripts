@@ -31,7 +31,7 @@ copy_url_paste_right() {
     # Continue with tabs
     for i in {1..8}; do
         xdotool key Tab
-        sleep 0.05
+        sleep $XDOTOOL_DELAY
     done
     sleep $XDOTOOL_DELAY
     xdotool key Return
