@@ -3,20 +3,6 @@
 # Constants
 XDOTOOL_DELAY=0.75
 
-# Function to check for escape key
-check_escape() {
-    # Check if Escape is currently pressed
-    if xdotool key Escape; then
-        notify-send "Macro aborted"
-        exit 1
-    fi
-    
-    # Also check if it was just pressed
-    if xdotool getkey Escape 2>/dev/null | grep -q "keydown"; then
-        notify-send "Macro aborted"
-        exit 1
-    fi
-}
 
 # Function to get random float between min and max
 random_float() {
@@ -28,7 +14,6 @@ copy_url_paste_right() {
     # Focus right first
     focus_right
     sleep $XDOTOOL_DELAY
-    check_escape
 
     # Continue with tabs
     for i in {1..8}; do
