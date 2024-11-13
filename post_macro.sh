@@ -23,12 +23,8 @@ copy_url_paste_right() {
     sleep $XDOTOOL_DELAY
     check_escape
 
-    # Press 'n' and initial paste
+    # Press 'n'
     xdotool key n
-    sleep $XDOTOOL_DELAY
-    
-    xdotool key ctrl+v
-    sleep 0.25
     sleep $XDOTOOL_DELAY
 
     # Continue with tabs
@@ -68,6 +64,11 @@ copy_url_paste_right() {
     
     # Move cursor to start
     xdotool key Home
+    sleep $XDOTOOL_DELAY
+    
+    # Paste the image
+    xdotool key ctrl+v
+    sleep 0.25
     sleep $XDOTOOL_DELAY
     
     # Read and type the description with quotes
