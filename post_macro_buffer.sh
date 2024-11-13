@@ -14,8 +14,8 @@ copy_url_paste_right() {
     focus_right
     sleep $XDOTOOL_DELAY
 
-    # Press 'n' and initial paste
-    xdotool key n
+    # Press 'np' and initial paste
+    xdotool type "np"
     sleep $XDOTOOL_DELAY
     
     xdotool key ctrl+v
