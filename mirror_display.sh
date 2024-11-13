@@ -64,14 +64,27 @@ else
         exit 1
     fi
 
-    # Set both displays to 1920x1080
-    xrandr --output "$INTERNAL" --mode 1920x1080
+    # Get highest available resolution for external display
+    echo "Debug: Available modes for external display:"
+    EXTERNAL_MODES=$(xrandr | grep -A1 "^$EXTERNAL connected" | tail -n1)
+    echo "$EXTERNAL_MODES"
+    EXTERNAL_RES=$(echo "$EXTERNAL_MODES" | grep -o "[0-9]\+x[0-9]\+" | head -n1)
+    
+    if [ -z "$EXTERNAL_RES" ]; then
+        echo "No valid resolution found for external display"
+        exit 1
+    fi
+    
+    echo "Debug: Using resolution: $EXTERNAL_RES"
+    
+    # Set both displays to the same resolution
+    xrandr --output "$INTERNAL" --mode "$EXTERNAL_RES"
     if [ $? -ne 0 ]; then
         echo "Failed to set internal display resolution"
         exit 1
     fi
 
-    xrandr --output "$EXTERNAL" --mode 1920x1080
+    xrandr --output "$EXTERNAL" --mode "$EXTERNAL_RES"
     if [ $? -ne 0 ]; then
         echo "Failed to set external display resolution"
         exit 1
