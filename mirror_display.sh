@@ -116,12 +116,19 @@ if [ "$DISCONNECT" != true ]; then
     echo "Monitoring for display changes..."
     while true; do
         # Watch for changes in display configuration
-        inotifywait -q -e modify /sys/class/drm/card*/status >/dev/null 2>&1
+        inotifywait -q -e modify,create,delete /sys/class/drm/card*/status 2>&1
+        
+        echo "Debug: Display change detected"
         
         # Wait a moment for the system to recognize the display
         sleep 2
         
+        # Force a display detection by temporarily turning off all outputs
+        xrandr --auto
+        
         # Reconfigure displays
         configure_displays
+        
+        echo "Debug: Reconfiguration complete, monitoring for next change..."
     done
 fi
