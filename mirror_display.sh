@@ -114,21 +114,25 @@ configure_displays
 
 if [ "$DISCONNECT" != true ]; then
     echo "Monitoring for display changes..."
+    last_state=""
     while true; do
-        # Watch for changes in display configuration
-        inotifywait -q -e modify,create,delete /sys/class/drm/card*/status 2>&1
+        # Check current external display state
+        current_state=$(xrandr | grep -E " connected|1920x1080" | grep -v "eDP" | wc -l)
         
-        echo "Debug: Display change detected"
+        if [ "$current_state" != "$last_state" ]; then
+            echo "Debug: Display state changed"
+            
+            # Force a display detection
+            xrandr --auto
+            
+            # Reconfigure displays
+            configure_displays
+            
+            last_state="$current_state"
+            echo "Debug: Reconfiguration complete, continuing monitoring..."
+        fi
         
-        # Wait a moment for the system to recognize the display
-        sleep 2
-        
-        # Force a display detection by temporarily turning off all outputs
-        xrandr --auto
-        
-        # Reconfigure displays
-        configure_displays
-        
-        echo "Debug: Reconfiguration complete, monitoring for next change..."
+        # Check every second
+        sleep 1
     done
 fi
