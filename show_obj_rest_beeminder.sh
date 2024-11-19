@@ -9,6 +9,14 @@ get_diff_times() {
         return
     fi
     
+    # Convert 24:00 to 23:59:59 for date processing
+    if [[ "$string1" == "24:00:00" ]]; then
+        string1="23:59:59"
+    fi
+    if [[ "$string2" == "24:00:00" ]]; then
+        string2="23:59:59"
+    fi
+    
     StartDate=$(date -u -d "$string1" +"%s")
     FinalDate=$(date -u -d "$string2" +"%s")
     
