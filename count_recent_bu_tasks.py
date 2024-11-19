@@ -38,5 +38,5 @@ if __name__ == '__main__':
     if recent:
         print("\nRecently edited tasks:")
         for task in recent:
-            mod_time = datetime.fromtimestamp(task['modified'])
+            mod_time = datetime.strptime(task['modified'], '%Y%m%dT%H%M%SZ')
             print(f"- {task['description']} (modified: {mod_time.strftime('%H:%M')})")
