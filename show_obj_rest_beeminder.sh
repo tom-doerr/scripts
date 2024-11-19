@@ -3,15 +3,20 @@
 get_diff_times() {
     string1="$1"
     string2="$2"
+    
+    # Check if either input is "day" or "days"
+    if [[ "$string1" == "day" || "$string1" == "days" || "$string2" == "day" || "$string2" == "days" ]]; then
+        echo "N/A"
+        return
+    fi
+    
     StartDate=$(date -u -d "$string1" +"%s")
     FinalDate=$(date -u -d "$string2" +"%s")
-    if (( $StartDate < $FinalDate ))
-    then
+    if (( StartDate < FinalDate )); then
         date -u -d "0 $FinalDate sec - $StartDate sec" +"%H:%M:%S"
     else
         echo "-"$(date -u -d "0 $StartDate sec - $FinalDate sec" +"%H:%M:%S")
     fi
-
 }
 
 
@@ -23,7 +28,7 @@ get_diff_times() {
 
 echo
 time1=""
-for word in  $(bm status 2>/dev/null | grep -E '(obj|main|ai3)' | sort | awk '{print "  "$2" "$NF" "$1}') 
+for word in  $(bm status 2>/dev/null | grep -E '(obj|main|ai3)' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
     then
@@ -37,9 +42,10 @@ do
         time1="$word"
     else
         #echo calc
-        if [[ $time1 == "✔" ]]
-        then
+        if [[ $time1 == "✔" ]]; then
             printf "  - - - "
+        elif [[ $time1 == "day" || $time1 == "days" || $word == "day" || $word == "days" ]]; then
+            printf "  N/A  $time1  $word  "
         else
             time_diff=$(get_diff_times "$time1:00" "$word:00")
             printf "  ${time_diff::-3}  $time1  $word  "
@@ -58,14 +64,14 @@ bm status 2>/dev/null
 #
 #
 #
-#for line in  $(bm status | grep obj | sort | awk '{print "  "$2" "$NF" "$1}') 
-#do
-#    echo $line
-#done
-
-#get_diff_times $(echo $obj_status_sorted | awk)
-
-
-#echo
-#echo "$(bm status | grep obj | sort | awk '{print "  "$2" "$NF" "$1}')
-#$(bm status)"
+#for line in  $(bm status | grep obj | sort | awk '{print "  "$2" "$NF" "$1}')                                                                                                                                                                                                    
+#do                                                                                                                                                                                                                                                                               
+#    echo $line                                                                                                                                                                                                                                                                   
+#done                                                                                                                                                                                                                                                                             
+                                                                                                                                                                                                                                                                                  
+#get_diff_times $(echo $obj_status_sorted | awk)                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                  
+                                                                                                                                                                                                                                                                                  
+#echo                                                                                                                                                                                                                                                                             
+#echo "$(bm status | grep obj | sort | awk '{print "  "$2" "$NF" "$1}')                                                                                                                                                                                                           
+#$(bm status)"   
