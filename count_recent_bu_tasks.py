@@ -34,9 +34,10 @@ def get_recent_bu_edits():
 
 if __name__ == '__main__':
     recent = get_recent_bu_edits()
-    print(f"Number of bu tasks edited in last 3 hours: {len(recent)}")
     if recent:
-        print("\nRecently edited tasks:")
+        print("Recently edited tasks:")
         for task in recent:
             mod_time = datetime.strptime(task['modified'], '%Y%m%dT%H%M%SZ')
             print(f"- {task['description']} (modified: {mod_time.strftime('%H:%M')})")
+    
+    print(f"\nNumber of bu tasks edited in last 3 hours: {len(recent)}")
