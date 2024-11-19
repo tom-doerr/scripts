@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 def get_recent_bu_edits():
     # Get all pending bu tasks in JSON format
-    cmd = ['ssh', 'gard', 'task', 'status:waiting', '+bu', 'export']
+    cmd = ['task', 'status:waiting', '+bu', 'export']
     result = subprocess.run(cmd, capture_output=True, text=True)
     
     print("Raw taskwarrior output:")
