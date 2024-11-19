@@ -6,13 +6,20 @@ import sys
 # Read the input task from stdin
 input_task = json.loads(sys.stdin.readline())
 
-# Define project-to-tags mapping
-PROJECT_TAGS = {
-    "work": ["office", "professional"],
-    "home": ["personal", "house"],
-    "study": ["learning", "education"],
-    # Add more project-to-tags mappings as needed
-}
+import os
+
+# Load project-to-tags mapping from config
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir, 'project_tags.json')
+try:
+    with open(config_path, 'r') as f:
+        PROJECT_TAGS = json.load(f)
+except FileNotFoundError:
+    print(f"Warning: Config file not found at {config_path}", file=sys.stderr)
+    PROJECT_TAGS = {}
+except json.JSONDecodeError:
+    print(f"Warning: Invalid JSON in config file {config_path}", file=sys.stderr)
+    PROJECT_TAGS = {}
 
 # If the task has a project and it's in our mapping
 if "project" in input_task and input_task["project"] in PROJECT_TAGS:
