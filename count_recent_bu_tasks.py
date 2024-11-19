@@ -2,6 +2,7 @@
 import json
 import subprocess
 from datetime import datetime, timedelta
+import time
 
 def get_recent_bu_edits():
     # Get all pending bu tasks in JSON format
@@ -24,7 +25,8 @@ def get_recent_bu_edits():
     recent_tasks = []
     for task in tasks:
         if 'modified' in task:
-            mod_time = datetime.fromtimestamp(int(task['modified']))
+            # Convert Taskwarrior timestamp (YYYYMMDDTHHMMSSZ) to datetime
+            mod_time = datetime.strptime(task['modified'], '%Y%m%dT%H%M%SZ')
             if mod_time > three_hours_ago:
                 recent_tasks.append(task)
     
