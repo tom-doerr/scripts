@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 
 def get_recent_bu_edits():
     # Get all pending bu tasks in JSON format
-    cmd = ['task', 'all', '+bu', '+PENDING', 'export']
+    cmd = ['task', 'all', '+bu', 'export']
     result = subprocess.run(cmd, capture_output=True, text=True)
     
     if not result.stdout.strip():
