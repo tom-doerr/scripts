@@ -7,7 +7,15 @@ def get_recent_bu_edits():
     # Get all pending bu tasks in JSON format
     cmd = ['task', 'all', '+bu', '+PENDING', 'export']
     result = subprocess.run(cmd, capture_output=True, text=True)
-    tasks = json.loads(result.stdout)
+    
+    if not result.stdout.strip():
+        return []
+        
+    try:
+        tasks = json.loads(result.stdout)
+    except json.JSONDecodeError:
+        print("Error: Could not parse taskwarrior output")
+        return []
     
     # Get current time and 3 hours ago
     now = datetime.now()
