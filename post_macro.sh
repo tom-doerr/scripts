@@ -1,22 +1,7 @@
 #!/bin/bash
 
 # Constants
-XDOTOOL_DELAY=0.75
-
-# Function to check for escape key
-check_escape() {
-    # Check if Escape is currently pressed
-    if xdotool key Escape; then
-        notify-send "Macro aborted"
-        exit 1
-    fi
-    
-    # Also check if it was just pressed
-    if xdotool getkey Escape 2>/dev/null | grep -q "keydown"; then
-        notify-send "Macro aborted"
-        exit 1
-    fi
-}
+XDOTOOL_DELAY=0.15
 
 # Function to get random float between min and max
 random_float() {
@@ -28,65 +13,51 @@ copy_url_paste_right() {
     # Focus right first
     focus_right
     sleep $XDOTOOL_DELAY
-    check_escape
 
-    # Press 'n'
+    # Press 'n' and initial paste
     xdotool key n
+    sleep $XDOTOOL_DELAY
+    
+    xdotool key ctrl+v
+    sleep 0.25
     sleep $XDOTOOL_DELAY
 
     # Continue with tabs
-    for i in {1..8}; do
+    for i in {1..14}; do
         xdotool key Tab
-        sleep $XDOTOOL_DELAY
+        sleep 0.05
     done
     sleep $XDOTOOL_DELAY
-    check_escape
-    
     xdotool key Return
     sleep $XDOTOOL_DELAY
-    
-    xdotool key n
-    sleep $XDOTOOL_DELAY
-    
     xdotool key BackSpace
     sleep $XDOTOOL_DELAY
     
     # Move back left to copy URL
     i3-msg focus left
     sleep $XDOTOOL_DELAY
-    
     xdotool key ctrl+l
     sleep $XDOTOOL_DELAY
-    
     xdotool key ctrl+c
     sleep $XDOTOOL_DELAY
-    
     xdotool key Escape
     sleep $XDOTOOL_DELAY
 
     # Move right again
     focus_right
     sleep $XDOTOOL_DELAY
-    
     sleep $(random_float 0.1 0.25)  # Random delay before paste
     xdotool key ctrl+v
     sleep $XDOTOOL_DELAY
     
-    # Move up twice
-    xdotool key Up
-    sleep $XDOTOOL_DELAY
-    check_escape
-    xdotool key Up
-    sleep $XDOTOOL_DELAY
-    check_escape
+    # Final Shift+Tab sequence
+    for i in {1..3}; do
+        xdotool key shift+Tab
+        sleep 0.05
+    done
     
     # Move cursor to start
     xdotool key Home
-    sleep $XDOTOOL_DELAY
-    
-    # Paste the image
-    xdotool key ctrl+v
-    sleep 0.25
     sleep $XDOTOOL_DELAY
     
     # Read and type the description with quotes
