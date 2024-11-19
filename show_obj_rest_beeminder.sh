@@ -29,7 +29,10 @@ get_diff_times() {
 echo
 time1=""
 # Get all goals and filter for those with time format (not days)
-for word in  $(bm status 2>/dev/null | grep -v -E ' day[s]* ' | sort | awk '{print "  "$2" "$NF" "$1}')
+# Get the raw status output first
+status_output=$(bm status 2>/dev/null)
+# Filter and format, excluding the separator lines
+for word in $(echo "$status_output" | grep -v '^-\+$' | grep -v -E ' day[s]* ' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
     then
@@ -58,7 +61,8 @@ do
         unset time1
     fi
 done
-bm status 2>/dev/null
+# Print the original status output but filter out any error messages
+echo "$status_output" | grep -v "date: invalid date"
 
 
 
