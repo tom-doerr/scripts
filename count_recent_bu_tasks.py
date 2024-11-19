@@ -24,7 +24,7 @@ def get_recent_bu_edits():
     recent_tasks = []
     for task in tasks:
         if 'modified' in task:
-            mod_time = datetime.fromtimestamp(task['modified'])
+            mod_time = datetime.fromtimestamp(int(task['modified']))
             if mod_time > three_hours_ago:
                 recent_tasks.append(task)
     
