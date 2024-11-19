@@ -31,8 +31,19 @@ time1=""
 # Get all goals and filter for those with time format (not days)
 # Get the raw status output first
 status_output=$(bm status 2>/dev/null)
-# Filter and format, excluding the separator lines
-for word in $(echo "$status_output" | grep -v '^-\+$' | grep -v -E ' day[s]* ' | sort | awk '{print "  "$2" "$NF" "$1}')
+
+# Create a filtered version that only includes goals due within 24 hours
+filtered_output=$(echo "$status_output" | awk '
+    /in [0-9]+:[0-9]+$/ {print}  # Match lines ending with "in HH:MM"
+    /in [0-9]+ days?$/ {         # Match lines with "in X days"
+        if ($NF == "days" || $NF == "day") {
+            if ($(NF-1) <= 1) print  # Only include if 1 day or less
+        }
+    }
+')
+
+# Process the filtered output
+for word in $(echo "$filtered_output" | grep -v '^-\+$' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
     then
@@ -61,8 +72,10 @@ do
         unset time1
     fi
 done
-# Print the original status output but filter out any error messages
-echo "$status_output" | grep -v "date: invalid date"
+# Print the filtered status with headers
+echo "-----------------------------------------------------------------"
+echo "$filtered_output" | grep -v "date: invalid date"
+echo "-----------------------------------------------------------------"
 
 
 
