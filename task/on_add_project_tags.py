@@ -9,8 +9,7 @@ input_task = json.loads(sys.stdin.readline())
 import os
 
 # Load project-to-tags mapping from config
-script_dir = os.path.dirname(os.path.abspath(__file__))
-config_path = os.path.join(script_dir, 'project_tags.json')
+config_path = '/home/tom/git/private/taskwarrior_project_tags.json'
 try:
     with open(config_path, 'r') as f:
         PROJECT_TAGS = json.load(f)
