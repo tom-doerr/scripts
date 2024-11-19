@@ -62,7 +62,7 @@ echo "$filtered_output"
 echo "=== END FILTERED ==="
 
 # Process the filtered output (only lines with actual goals)
-for word in $(echo "$filtered_output" | grep -v '^-\+$' | sort | awk '{print "  "$2" "$NF" "$1}')
+for word in $(echo "$filtered_output" | grep -v '^===' | grep -v '^DEBUG:' | grep -v '^-\+$' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
     then
@@ -70,10 +70,6 @@ do
         continue
     fi
     word=${word/+/}
-    # Skip if word is just dashes (separator line)
-    if [[ "$word" =~ ^-+$ ]]; then
-        continue
-    fi
     
     if [[ $time1 == "" ]]; then
         time1="$word"
@@ -93,7 +89,7 @@ do
 done
 # Print the filtered status with headers
 echo "-----------------------------------------------------------------"
-echo "$filtered_output" | grep -v "date: invalid date"
+echo "$filtered_output" | grep -v "date: invalid date" | grep -v '^===' | grep -v '^DEBUG:'
 echo "-----------------------------------------------------------------"
 
 
