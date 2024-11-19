@@ -32,17 +32,36 @@ time1=""
 # Get the raw status output first
 status_output=$(bm status 2>/dev/null)
 
+# Debug: Show raw status output
+echo "=== RAW STATUS OUTPUT ==="
+echo "$status_output"
+echo "=== END RAW STATUS ==="
+
 # Create a filtered version that only includes goals due within 24 hours
 filtered_output=$(echo "$status_output" | awk '
-    /in [0-9]+:[0-9]+$/ {print}  # Match lines ending with "in HH:MM"
-    /in [0-9]+ days?$/ {         # Match lines with "in X days"
-        if ($NF == "days" || $NF == "day") {
-            if ($(NF-1) <= 1) print  # Only include if 1 day or less
+    BEGIN { print "=== PROCESSING LINES ===" }
+    {
+        # Print debug info for each line
+        print "DEBUG: Processing line: " $0
+        
+        if ($0 ~ /in [0-9]+:[0-9]+$/) {
+            print "DEBUG: Found HH:MM format"
+            print
+        } else if ($0 ~ /in [0-9]+ days?$/) {
+            days = $(NF-1)
+            print "DEBUG: Found days format: " days " days"
+            if (days <= 1) {
+                print
+            }
         }
     }
 ')
 
-# Process the filtered output
+echo "=== FILTERED OUTPUT ==="
+echo "$filtered_output"
+echo "=== END FILTERED ==="
+
+# Process the filtered output (only lines with actual goals)
 for word in $(echo "$filtered_output" | grep -v '^-\+$' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
