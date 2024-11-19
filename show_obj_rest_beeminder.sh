@@ -37,19 +37,23 @@ do
         continue
     fi
     word=${word/+/}
-    if [[ $time1 == "" ]]
-    then
-        #echo set
+    # Skip if word is just dashes (separator line)
+    if [[ "$word" =~ ^-+$ ]]; then
+        continue
+    fi
+    
+    if [[ $time1 == "" ]]; then
         time1="$word"
     else
-        #echo calc
         if [[ $time1 == "✔" ]]; then
             printf "  - - - "
         elif [[ $time1 == "day" || $time1 == "days" || $word == "day" || $word == "days" ]]; then
             printf "  N/A  $time1  $word  "
-        else
+        elif [[ $time1 =~ ^[0-9:]+$ ]] && [[ $word =~ ^[0-9:]+$ ]]; then
             time_diff=$(get_diff_times "$time1:00" "$word:00")
             printf "  ${time_diff::-3}  $time1  $word  "
+        else
+            printf "  - - - "
         fi
         unset time1
     fi
