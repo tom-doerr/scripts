@@ -28,7 +28,8 @@ get_diff_times() {
 
 echo
 time1=""
-for word in  $(bm status 2>/dev/null | grep -E '(obj|main|ai3)' | sort | awk '{print "  "$2" "$NF" "$1}')
+# Get all goals and filter for those with time format (not days)
+for word in  $(bm status 2>/dev/null | grep -v -E ' day[s]* ' | sort | awk '{print "  "$2" "$NF" "$1}')
 do
     if [[ $word =~ user ]]
     then
