@@ -17,6 +17,7 @@ copy_url_paste_right() {
     # Press 'n' and initial paste
     xdotool key n
     sleep $XDOTOOL_DELAY
+    sleep 0.2  # Additional delay after 'n' press
     
     xdotool key ctrl+v
     sleep 0.25
