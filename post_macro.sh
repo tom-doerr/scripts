@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Constants
-XDOTOOL_DELAY=0.15
+XDOTOOL_DELAY=0.3
 
 # Function to get random float between min and max
 random_float() {
