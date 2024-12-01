@@ -5,7 +5,6 @@
 
 while true                                            
 do                                                             
-    # task +ACTIVE
     if [ -n "$(task +ACTIVE _uuid)" ]; then
         echo "You have active tasks"
     else
@@ -13,7 +12,6 @@ do
         sleep 10
         continue
     fi
-    #timew | head -n1
     # check if break in tags
     timew_line=$(timew | head -n1)
     if [[ "$timew_line" == *break* ]]; then
