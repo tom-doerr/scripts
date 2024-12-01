@@ -135,6 +135,8 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Display TaskWarrior tasks with randomization')
     parser.add_argument('--once', action='store_true', help='Show report once and exit')
+    parser.add_argument('--interval', type=float, default=0.1, 
+                       help='Scan interval in seconds (default: 0.1)')
     args = parser.parse_args()
 
     # Default filter command - can be customized
@@ -156,7 +158,7 @@ def main():
                 if current_mtime > last_mtime:
                     display_tasks(filter_cmd)
                     last_mtime = current_mtime
-                time.sleep(1)
+                time.sleep(args.interval)
             except KeyboardInterrupt:
                 break
 
