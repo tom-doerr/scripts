@@ -3,6 +3,9 @@ import json
 import subprocess
 import random
 from typing import List, Dict
+from rich.console import Console
+from rich.table import Table
+from rich import box
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
@@ -30,6 +33,40 @@ def sort_tasks_with_random(tasks: List[Dict],
     
     return preserved_tasks + other_tasks
 
+def create_task_table(tasks: List[Dict]) -> Table:
+    """Create a rich table for tasks"""
+    table = Table(box=box.SIMPLE)
+    
+    # Add columns
+    table.add_column("ID", justify="right", style="cyan", no_wrap=True)
+    table.add_column("Description", style="white")
+    table.add_column("Project", style="blue")
+    table.add_column("Until", style="magenta")
+    table.add_column("Est", justify="right")
+    table.add_column("NPri", justify="right")
+    table.add_column("Urg", justify="right", style="yellow")
+
+    # Add rows
+    for task in tasks:
+        # Prepare values
+        id = str(task.get('id', ''))
+        description = task.get('description', '')[:37] + '...' if len(task.get('description', '')) > 37 else task.get('description', '')
+        project = task.get('project', '')[:12] + '...' if len(task.get('project', '')) > 12 else task.get('project', '')
+        until = task.get('until', '')[:10] if task.get('until') else ''
+        estimate = str(task.get('estimate', ''))
+        npriority = str(task.get('npriority', ''))
+        urgency = f"{task.get('urgency', 0):.1f}"
+
+        # Style for 'next' tagged tasks
+        style = "rgb(0,255,255)" if 'next' in task.get('tags', []) else None
+        
+        table.add_row(
+            id, description, project, until, estimate, npriority, urgency,
+            style=style
+        )
+
+    return table
+
 def main():
     # Default filter command - can be customized
     filter_cmd = [
@@ -42,21 +79,10 @@ def main():
     tasks = get_tasks(filter_cmd)
     sorted_tasks = sort_tasks_with_random(tasks)
 
-    # Print header
-    print(f"{'ID':<4} {'Description':<40} {'Project':<15} {'Until':<12} {'Est':<6} {'NPri':<4} {'Urg':<5}")
-    print("-" * 86)
-
-    # Print tasks
-    for task in sorted_tasks:
-        id = task.get('id', '')
-        description = task.get('description', '')[:37] + '...' if len(task.get('description', '')) > 37 else task.get('description', '')
-        project = task.get('project', '')[:12] + '...' if len(task.get('project', '')) > 12 else task.get('project', '')
-        until = task.get('until', '')[:10] if task.get('until') else ''
-        estimate = task.get('estimate', '')
-        npriority = task.get('npriority', '')
-        urgency = f"{task.get('urgency', 0):.1f}"
-        
-        print(f"{id:<4} {description:<40} {project:<15} {until:<12} {estimate:<6} {npriority:<4} {urgency:<5}")
+    # Create and display table
+    console = Console()
+    table = create_task_table(sorted_tasks)
+    console.print(table)
 
 if __name__ == "__main__":
     main()
