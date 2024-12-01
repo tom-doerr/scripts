@@ -13,18 +13,6 @@ from rich import box
 import os.path
 from datetime import datetime
 
-# Set up logging to file and stdout
-log_file = 'show_tw_tasks.log'
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(message)s',
-    datefmt='%Y-%m-%d %H:%M:%S',
-    handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
-)
-logging.info("Starting show_tw_tasks.py")
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
@@ -159,7 +147,6 @@ def main():
             try:
                 current_mtime = get_data_files_mtime()
                 if current_mtime > last_mtime:
-                    logging.info("Task data changed, updating display...")
                     display_tasks(filter_cmd)
                     last_mtime = current_mtime
                 time.sleep(1)
