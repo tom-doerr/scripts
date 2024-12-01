@@ -88,8 +88,8 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
         # Add row with styled elements
         table.add_row(
-            str(num_id),
-            char_id,
+            f"[black]{num_id}[/]" if is_active else str(num_id),
+            f"[black]{char_id}[/]" if is_active else char_id,
             description,
             f"{project_style}{project}[/]" if project else "",
             f"{npriority_style}{npriority}[/]" if npriority else "",
