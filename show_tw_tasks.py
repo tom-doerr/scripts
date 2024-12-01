@@ -94,6 +94,10 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
 def display_tasks(filter_cmd):
     """Display tasks table"""
+    # Get terminal size
+    import shutil
+    terminal_height = shutil.get_terminal_size().lines
+    
     # Prepare the new output first
     tasks = get_tasks(filter_cmd)
     sorted_tasks = sort_tasks_with_random(tasks)
@@ -111,9 +115,13 @@ def display_tasks(filter_cmd):
     console.print(table)
     output = string_io.getvalue()
     
+    # Split output into lines and take only what fits in terminal
+    lines = output.splitlines()
+    truncated_output = '\n'.join(lines[:terminal_height-1])
+    
     # Only clear screen and print when everything is ready
     os.system('clear')
-    print(output)
+    print(truncated_output)
 
 def get_data_files_mtime():
     """Get the latest modification time of TaskWarrior data files"""
