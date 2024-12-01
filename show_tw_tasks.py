@@ -10,8 +10,8 @@ from typing import List, Dict
 from rich.console import Console
 from rich.table import Table
 from rich import box
-from watchdog.observers import Observer
-from watchdog.events import FileSystemEventHandler
+import os.path
+from datetime import datetime
 
 # Set up logging to file and stdout
 log_file = 'show_tw_tasks.log'
@@ -92,37 +92,27 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
     return table
 
-class TaskWarriorHandler(FileSystemEventHandler):
-    def __init__(self, filter_cmd):
-        self.filter_cmd = filter_cmd
-        self.console = Console()
-
-    def display_tasks(self):
-        # Clear screen
-        os.system('clear')
-        
-        tasks = get_tasks(self.filter_cmd)
-        sorted_tasks = sort_tasks_with_random(tasks)
-        table = create_task_table(sorted_tasks)
-        self.console.print(table)
-
-    def on_modified(self, event):
-        logging.info(f"Modified: {event.src_path}")
-        if not event.is_directory and (
-            event.src_path.endswith('pending.data') or 
-            event.src_path.endswith('completed.data') or
-            event.src_path.endswith('undo.data')
-        ):
-            logging.info("Updating display...")
-            self.display_tasks()
-
-def display_once(filter_cmd):
-    """Display tasks once without watching for changes"""
+def display_tasks(filter_cmd):
+    """Display tasks table"""
     console = Console()
+    os.system('clear')
     tasks = get_tasks(filter_cmd)
     sorted_tasks = sort_tasks_with_random(tasks)
     table = create_task_table(sorted_tasks)
     console.print(table)
+
+def get_data_files_mtime():
+    """Get the latest modification time of TaskWarrior data files"""
+    data_dir = os.path.expanduser('~/.task')
+    data_files = ['pending.data', 'completed.data', 'undo.data']
+    mtimes = []
+    
+    for file in data_files:
+        file_path = os.path.join(data_dir, file)
+        if os.path.exists(file_path):
+            mtimes.append(os.path.getmtime(file_path))
+    
+    return max(mtimes) if mtimes else 0
 
 def main():
     # Parse arguments
@@ -139,33 +129,20 @@ def main():
     ]
 
     if args.once:
-        display_once(filter_cmd)
+        display_tasks(filter_cmd)
     else:
-        # Get TaskWarrior data directory
-        data_dir = os.path.expanduser('~/.task')
+        last_mtime = 0
         
-        # Ensure the directory exists
-        if not os.path.exists(data_dir):
-            print(f"TaskWarrior data directory not found at {data_dir}")
-            return
-
-        print(f"Watching TaskWarrior data directory: {data_dir}")
-        
-        # Set up watchdog
-        event_handler = TaskWarriorHandler(filter_cmd)
-        observer = Observer()
-        observer.schedule(event_handler, data_dir, recursive=False)
-        observer.start()
-
-        # Display initial tasks
-        event_handler.display_tasks()
-
-        try:
-            while True:
+        while True:
+            try:
+                current_mtime = get_data_files_mtime()
+                if current_mtime > last_mtime:
+                    logging.info("Task data changed, updating display...")
+                    display_tasks(filter_cmd)
+                    last_mtime = current_mtime
                 time.sleep(1)
-        except KeyboardInterrupt:
-            observer.stop()
-        observer.join()
+            except KeyboardInterrupt:
+                break
 
 if __name__ == "__main__":
     main()
