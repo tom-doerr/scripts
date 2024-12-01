@@ -95,11 +95,18 @@ def create_task_table(tasks: List[Dict]) -> Table:
 def display_tasks(filter_cmd):
     """Display tasks table"""
     console = Console()
-    os.system('clear')
+    
+    # Prepare the new output first
     tasks = get_tasks(filter_cmd)
     sorted_tasks = sort_tasks_with_random(tasks)
     table = create_task_table(sorted_tasks)
-    console.print(table)
+    
+    # Capture the output as a string
+    output = console.render_str(table)
+    
+    # Only clear screen and print when everything is ready
+    os.system('clear')
+    print(output)
 
 def get_data_files_mtime():
     """Get the latest modification time of TaskWarrior data files"""
