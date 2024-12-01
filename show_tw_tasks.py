@@ -13,10 +13,18 @@ from rich import box
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# Set up logging
-logging.basicConfig(level=logging.INFO,
-                   format='%(asctime)s - %(message)s',
-                   datefmt='%Y-%m-%d %H:%M:%S')
+# Set up logging to file and stdout
+log_file = 'show_tw_tasks.log'
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    handlers=[
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+)
+logging.info("Starting show_tw_tasks.py")
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
