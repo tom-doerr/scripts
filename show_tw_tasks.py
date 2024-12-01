@@ -2,10 +2,15 @@
 import json
 import subprocess
 import random
+import os
+import time
+import argparse
 from typing import List, Dict
 from rich.console import Console
 from rich.table import Table
 from rich import box
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
@@ -73,7 +78,38 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
     return table
 
+class TaskWarriorHandler(FileSystemEventHandler):
+    def __init__(self, filter_cmd):
+        self.filter_cmd = filter_cmd
+        self.console = Console()
+
+    def display_tasks(self):
+        # Clear screen
+        os.system('clear')
+        
+        tasks = get_tasks(self.filter_cmd)
+        sorted_tasks = sort_tasks_with_random(tasks)
+        table = create_task_table(sorted_tasks)
+        self.console.print(table)
+
+    def on_modified(self, event):
+        if event.src_path.endswith('pending.data'):
+            self.display_tasks()
+
+def display_once(filter_cmd):
+    """Display tasks once without watching for changes"""
+    console = Console()
+    tasks = get_tasks(filter_cmd)
+    sorted_tasks = sort_tasks_with_random(tasks)
+    table = create_task_table(sorted_tasks)
+    console.print(table)
+
 def main():
+    # Parse arguments
+    parser = argparse.ArgumentParser(description='Display TaskWarrior tasks with randomization')
+    parser.add_argument('--once', action='store_true', help='Show report once and exit')
+    args = parser.parse_args()
+
     # Default filter command - can be customized
     filter_cmd = [
         'task', 'status:Pending', '-BLOCKED',
@@ -81,14 +117,28 @@ def main():
         'and', '-bu', '-sm', '-scheduled_today_custom',
         'export'
     ]
-    
-    tasks = get_tasks(filter_cmd)
-    sorted_tasks = sort_tasks_with_random(tasks)
 
-    # Create and display table
-    console = Console()
-    table = create_task_table(sorted_tasks)
-    console.print(table)
+    if args.once:
+        display_once(filter_cmd)
+    else:
+        # Get TaskWarrior data directory
+        data_dir = os.path.expanduser('~/.task')
+        
+        # Set up watchdog
+        event_handler = TaskWarriorHandler(filter_cmd)
+        observer = Observer()
+        observer.schedule(event_handler, data_dir, recursive=False)
+        observer.start()
+
+        # Display initial tasks
+        event_handler.display_tasks()
+
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            observer.stop()
+        observer.join()
 
 if __name__ == "__main__":
     main()
