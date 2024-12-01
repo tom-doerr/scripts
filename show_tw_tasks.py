@@ -102,9 +102,9 @@ def display_tasks(filter_cmd):
     from io import StringIO
     from rich.console import Console
     
-    # Create console with string buffer
+    # Create console with string buffer and force color
     string_io = StringIO()
-    console = Console(file=string_io)
+    console = Console(file=string_io, force_terminal=True)
     
     # Render table to the string buffer
     console.print(table)
