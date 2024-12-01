@@ -25,9 +25,10 @@ def sort_tasks_with_random(tasks: List[Dict],
                          max_boost: float = 20.0,
                          preserve_tags: List[str] = ['next']) -> List[Dict]:
     """Sort tasks with random boosting, preserving certain tags at top"""
-    # Separate preserved tag tasks
-    preserved_tasks = [t for t in tasks if any(tag in t.get('tags', []) for tag in preserve_tags)]
-    other_tasks = [t for t in tasks if not any(tag in t.get('tags', []) for tag in preserve_tags)]
+    # Separate active and preserved tag tasks
+    active_tasks = [t for t in tasks if t.get('start')]
+    preserved_tasks = [t for t in tasks if not t.get('start') and any(tag in t.get('tags', []) for tag in preserve_tags)]
+    other_tasks = [t for t in tasks if not t.get('start') and not any(tag in t.get('tags', []) for tag in preserve_tags)]
 
     # Add random boost to other tasks
     for task in other_tasks:
@@ -39,7 +40,7 @@ def sort_tasks_with_random(tasks: List[Dict],
     # Sort other tasks by urgency + random boost
     other_tasks.sort(key=lambda x: x.get('urgency', 0) + x['_random_boost'], reverse=True)
     
-    return preserved_tasks + other_tasks
+    return active_tasks + preserved_tasks + other_tasks
 
 def create_task_table(tasks: List[Dict]) -> Table:
     """Create a rich table for tasks"""
@@ -63,9 +64,11 @@ def create_task_table(tasks: List[Dict]) -> Table:
         npriority = str(task.get('npriority', ''))
         urgency = f"{task.get('urgency', 0):.1f}"
 
-        # Determine row style based on tags and urgency
-        row_style = None
-        if 'next' in task.get('tags', []):
+        # Determine row style based on active status, tags and urgency
+        row_style = "on green" if task.get('start') else None
+        if task.get('start'):
+            description = f"[black]{description}[/]"  # Black text on green background
+        elif 'next' in task.get('tags', []):
             description = f"[yellow]{description}[/]"
         elif float(task.get('urgency', 0)) > 10:
             description = f"[bright_white]{description}[/]"
