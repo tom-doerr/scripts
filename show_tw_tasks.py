@@ -93,7 +93,11 @@ class TaskWarriorHandler(FileSystemEventHandler):
         self.console.print(table)
 
     def on_modified(self, event):
-        if event.src_path.endswith('pending.data'):
+        if not event.is_directory and (
+            event.src_path.endswith('pending.data') or 
+            event.src_path.endswith('completed.data') or
+            event.src_path.endswith('undo.data')
+        ):
             self.display_tasks()
 
 def display_once(filter_cmd):
@@ -123,6 +127,13 @@ def main():
     else:
         # Get TaskWarrior data directory
         data_dir = os.path.expanduser('~/.task')
+        
+        # Ensure the directory exists
+        if not os.path.exists(data_dir):
+            print(f"TaskWarrior data directory not found at {data_dir}")
+            return
+
+        print(f"Watching TaskWarrior data directory: {data_dir}")
         
         # Set up watchdog
         event_handler = TaskWarriorHandler(filter_cmd)
