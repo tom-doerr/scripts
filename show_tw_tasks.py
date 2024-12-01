@@ -50,7 +50,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
     table.add_column("Project", style="blue")
     table.add_column("Until", style="magenta")
     table.add_column("Est", justify="right", style="green")
-    table.add_column("NPri", justify="right", style="yellow")
+    table.add_column("NPri", justify="right", style="white")
     table.add_column("Urg", justify="right", style="red")
 
     # Add rows
@@ -80,7 +80,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
             f"[blue]{project}[/]" if project else "",
             f"[magenta]{until}[/]" if until else "",
             f"[green]{estimate}[/]" if estimate else "",
-            f"[yellow]{npriority}[/]" if npriority else "",
+            f"[white]{npriority}[/]" if npriority else "",
             f"[red]{urgency}[/]",
             style=row_style
         )
