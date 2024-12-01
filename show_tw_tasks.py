@@ -64,25 +64,36 @@ def create_task_table(tasks: List[Dict]) -> Table:
         npriority = str(task.get('npriority', ''))
         urgency = f"{task.get('urgency', 0):.1f}"
 
-        # Determine row style based on active status, tags and urgency
-        row_style = "on green" if task.get('start') else None
-        if task.get('start'):
-            description = f"[black]{description}[/]"  # Black text on green background
-        elif 'next' in task.get('tags', []):
-            description = f"[yellow]{description}[/]"
-        elif float(task.get('urgency', 0)) > 10:
-            description = f"[bright_white]{description}[/]"
+        # Determine row style and text colors based on active status
+        is_active = task.get('start')
+        row_style = "on green" if is_active else None
+        
+        # For active tasks, everything is black
+        if is_active:
+            description = f"[black]{description}[/]"
+            project_style = "[black]"
+            npriority_style = "[black]"
+            urgency_style = "[black]"
+        # For inactive tasks, use normal colors
         else:
-            description = f"[white]{description}[/]"
+            if 'next' in task.get('tags', []):
+                description = f"[yellow]{description}[/]"
+            elif float(task.get('urgency', 0)) > 10:
+                description = f"[bright_white]{description}[/]"
+            else:
+                description = f"[white]{description}[/]"
+            project_style = "[blue]"
+            npriority_style = "[white]"
+            urgency_style = "[red]"
 
         # Add row with styled elements
         table.add_row(
             str(num_id),
             char_id,
             description,
-            f"[blue]{project}[/]" if project else "",
-            f"[white]{npriority}[/]" if npriority else "",
-            f"[red]{urgency}[/]",
+            f"{project_style}{project}[/]" if project else "",
+            f"{npriority_style}{npriority}[/]" if npriority else "",
+            f"{urgency_style}{urgency}[/]",
             style=row_style
         )
 
