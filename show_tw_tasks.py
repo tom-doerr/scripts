@@ -58,7 +58,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
         urgency = f"{task.get('urgency', 0):.1f}"
 
         # Style for 'next' tagged tasks
-        style = "rgb(0,255,255)" if 'next' in task.get('tags', []) else None
+        style = "yellow" if 'next' in task.get('tags', []) else None
         
         table.add_row(
             id, description, project, until, estimate, npriority, urgency,
