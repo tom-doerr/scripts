@@ -34,11 +34,11 @@ wait_task() {
         else
             time_unit=""
         fi
-        task $first_task_id mod wait:$command"$time_unit"
+        task rc.context=none $first_task_id mod wait:$command"$time_unit"
     elif [[ $command =~ '^(d|w|m|y|q)$' ]]
     then
         first_task_id=$(get_first_task 'review_bucket_items')
-        task $first_task_id mod wait:1"$command"
+        task rc.context=none $first_task_id mod wait:1"$command"
     fi
 }
 
