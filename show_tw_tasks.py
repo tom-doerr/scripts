@@ -62,7 +62,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
         
         table.add_row(
             id, 
-            description, 
+            f"[{description_style}]{description}[/]", 
             project, 
             until, 
             estimate, 
