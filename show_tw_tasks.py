@@ -5,12 +5,18 @@ import random
 import os
 import time
 import argparse
+import logging
 from typing import List, Dict
 from rich.console import Console
 from rich.table import Table
 from rich import box
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
+
+# Set up logging
+logging.basicConfig(level=logging.INFO,
+                   format='%(asctime)s - %(message)s',
+                   datefmt='%Y-%m-%d %H:%M:%S')
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
@@ -93,11 +99,13 @@ class TaskWarriorHandler(FileSystemEventHandler):
         self.console.print(table)
 
     def on_modified(self, event):
+        logging.info(f"Modified: {event.src_path}")
         if not event.is_directory and (
             event.src_path.endswith('pending.data') or 
             event.src_path.endswith('completed.data') or
             event.src_path.endswith('undo.data')
         ):
+            logging.info("Updating display...")
             self.display_tasks()
 
 def display_once(filter_cmd):
