@@ -48,8 +48,6 @@ def create_task_table(tasks: List[Dict]) -> Table:
     table.add_column("ID", justify="right", style="cyan", no_wrap=True)
     table.add_column("Description", style="white")
     table.add_column("Project", style="blue")
-    table.add_column("Until", style="magenta")
-    table.add_column("Est", justify="right", style="green")
     table.add_column("NPri", justify="right", style="white")
     table.add_column("Urg", justify="right", style="red")
 
@@ -59,8 +57,6 @@ def create_task_table(tasks: List[Dict]) -> Table:
         id = str(task.get('id', ''))
         description = task.get('description', '')[:37] + '...' if len(task.get('description', '')) > 37 else task.get('description', '')
         project = task.get('project', '')[:12] + '...' if len(task.get('project', '')) > 12 else task.get('project', '')
-        until = task.get('until', '')[:10] if task.get('until') else ''
-        estimate = str(task.get('estimate', ''))
         npriority = str(task.get('npriority', ''))
         urgency = f"{task.get('urgency', 0):.1f}"
 
@@ -78,8 +74,6 @@ def create_task_table(tasks: List[Dict]) -> Table:
             id,
             description,
             f"[blue]{project}[/]" if project else "",
-            f"[magenta]{until}[/]" if until else "",
-            f"[green]{estimate}[/]" if estimate else "",
             f"[white]{npriority}[/]" if npriority else "",
             f"[red]{urgency}[/]",
             style=row_style
