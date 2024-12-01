@@ -94,15 +94,22 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
 def display_tasks(filter_cmd):
     """Display tasks table"""
-    console = Console()
-    
     # Prepare the new output first
     tasks = get_tasks(filter_cmd)
     sorted_tasks = sort_tasks_with_random(tasks)
     table = create_task_table(sorted_tasks)
     
-    # Capture the output as a string
-    output = console.render_str(table)
+    # Create a string buffer to capture the output
+    from io import StringIO
+    from rich.console import Console
+    
+    # Create console with string buffer
+    string_io = StringIO()
+    console = Console(file=string_io)
+    
+    # Render table to the string buffer
+    console.print(table)
+    output = string_io.getvalue()
     
     # Only clear screen and print when everything is ready
     os.system('clear')
