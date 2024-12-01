@@ -44,7 +44,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
     table.add_column("Until", style="magenta")
     table.add_column("Est", justify="right")
     table.add_column("NPri", justify="right")
-    table.add_column("Urg", justify="right", style="yellow")
+    table.add_column("Urg", justify="right")
 
     # Add rows
     for task in tasks:
@@ -57,12 +57,18 @@ def create_task_table(tasks: List[Dict]) -> Table:
         npriority = str(task.get('npriority', ''))
         urgency = f"{task.get('urgency', 0):.1f}"
 
-        # Style for 'next' tagged tasks
-        style = "yellow" if 'next' in task.get('tags', []) else None
+        # Color only description yellow for 'next' tagged tasks
+        description_style = "yellow" if 'next' in task.get('tags', []) else "white"
         
         table.add_row(
-            id, description, project, until, estimate, npriority, urgency,
-            style=style
+            id, 
+            description, 
+            project, 
+            until, 
+            estimate, 
+            npriority, 
+            urgency,
+            style=None  # No overall row style
         )
 
     return table
