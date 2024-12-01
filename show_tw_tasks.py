@@ -12,6 +12,7 @@ from rich.table import Table
 from rich import box
 import os.path
 from datetime import datetime
+from task_id_mapper import number_to_char_id
 
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
@@ -46,6 +47,7 @@ def create_task_table(tasks: List[Dict]) -> Table:
     
     # Add columns
     table.add_column("ID", justify="right", style="cyan", no_wrap=True)
+    table.add_column("Key", justify="center", style="yellow", no_wrap=True)
     table.add_column("Description", style="white")
     table.add_column("Project", style="blue")
     table.add_column("NPri", justify="right", style="white")
@@ -54,7 +56,8 @@ def create_task_table(tasks: List[Dict]) -> Table:
     # Add rows
     for task in tasks:
         # Prepare values
-        id = str(task.get('id', ''))
+        num_id = task.get('id', 0)
+        char_id = number_to_char_id(num_id) if num_id else ''
         description = task.get('description', '')[:37] + '...' if len(task.get('description', '')) > 37 else task.get('description', '')
         project = task.get('project', '')[:12] + '...' if len(task.get('project', '')) > 12 else task.get('project', '')
         npriority = str(task.get('npriority', ''))
@@ -71,7 +74,8 @@ def create_task_table(tasks: List[Dict]) -> Table:
 
         # Add row with styled elements
         table.add_row(
-            id,
+            str(num_id),
+            char_id,
             description,
             f"[blue]{project}[/]" if project else "",
             f"[white]{npriority}[/]" if npriority else "",
