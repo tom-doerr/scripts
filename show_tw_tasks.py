@@ -49,9 +49,9 @@ def create_task_table(tasks: List[Dict]) -> Table:
     table.add_column("Description", style="white")
     table.add_column("Project", style="blue")
     table.add_column("Until", style="magenta")
-    table.add_column("Est", justify="right")
-    table.add_column("NPri", justify="right")
-    table.add_column("Urg", justify="right")
+    table.add_column("Est", justify="right", style="green")
+    table.add_column("NPri", justify="right", style="yellow")
+    table.add_column("Urg", justify="right", style="red")
 
     # Add rows
     for task in tasks:
@@ -64,18 +64,25 @@ def create_task_table(tasks: List[Dict]) -> Table:
         npriority = str(task.get('npriority', ''))
         urgency = f"{task.get('urgency', 0):.1f}"
 
-        # Color only description yellow for 'next' tagged tasks
-        description_style = "yellow" if 'next' in task.get('tags', []) else "white"
-        
+        # Determine row style based on tags and urgency
+        row_style = None
+        if 'next' in task.get('tags', []):
+            description = f"[yellow]{description}[/]"
+        elif float(task.get('urgency', 0)) > 10:
+            description = f"[bright_white]{description}[/]"
+        else:
+            description = f"[white]{description}[/]"
+
+        # Add row with styled elements
         table.add_row(
-            id, 
-            f"[{description_style}]{description}[/]", 
-            project, 
-            until, 
-            estimate, 
-            npriority, 
-            urgency,
-            style=None  # No overall row style
+            id,
+            description,
+            f"[blue]{project}[/]" if project else "",
+            f"[magenta]{until}[/]" if until else "",
+            f"[green]{estimate}[/]" if estimate else "",
+            f"[yellow]{npriority}[/]" if npriority else "",
+            f"[red]{urgency}[/]",
+            style=row_style
         )
 
     return table
