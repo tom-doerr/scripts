@@ -30,6 +30,9 @@ def sort_tasks_with_random(tasks: List[Dict],
     preserved_tasks = [t for t in tasks if not t.get('start') and any(tag in t.get('tags', []) for tag in preserve_tags)]
     other_tasks = [t for t in tasks if not t.get('start') and not any(tag in t.get('tags', []) for tag in preserve_tags)]
 
+    # Sort preserved tasks by urgency
+    preserved_tasks.sort(key=lambda x: x.get('urgency', 0), reverse=True)
+
     # Add random boost to other tasks
     for task in other_tasks:
         if random.random() < boost_chance:
