@@ -155,7 +155,7 @@ def main():
     filter_cmd = [
         'task', 'status:Pending', '-BLOCKED',
         'and', '(-ing', 'or', '+self)',
-        'and', '-bu', '-sm', '-scheduled_today_custom',
+        'and', '-bu', '-sm', #'-scheduled_today_custom',
         'export'
     ]
 
