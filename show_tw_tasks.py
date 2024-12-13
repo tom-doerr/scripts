@@ -3,9 +3,8 @@ import json
 import subprocess
 import random
 
-# Constants for Pareto distribution
-PARETO_ALPHA = 3
-PARETO_DIVISION = 3
+# Constant for Pareto distribution
+PARETO_CONSTANT = 3
 import os
 import time
 import argparse
@@ -38,7 +37,7 @@ def sort_tasks_with_random(tasks: List[Dict],
     preserved_tasks.sort(key=lambda x: x.get('urgency', 0), reverse=True)
 
     # Add random boost to other tasks using a power law distribution (Pareto)
-    other_tasks = [{**task, '_random_boost': random.paretovariate(PARETO_ALPHA) * max_boost / PARETO_DIVISION} for task in other_tasks]
+    other_tasks = [{**task, '_random_boost': random.paretovariate(PARETO_CONSTANT) * max_boost / PARETO_CONSTANT} for task in other_tasks]
 
     # Sort other tasks by urgency + random boost
     other_tasks.sort(key=lambda x: x.get('urgency', 0) + x['_random_boost'], reverse=True)
