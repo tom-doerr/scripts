@@ -175,25 +175,5 @@ def main():
             except KeyboardInterrupt:
                 break
 
-def plot_boost_distribution(max_boost: float = 20.0, num_samples: int = 1000):
-    """Plot a histogram of random boosts sampled from a power law distribution"""
-    import matplotlib.pyplot as plt
-
-    # Switch to an interactive backend
-    plt.switch_backend('TkAgg')
-
-    # Generate random boosts
-    boosts = [(1 + random.paretovariate(1.15)) * max_boost / 3 for _ in range(num_samples)]
-
-    # Plot histogram
-    plt.hist(boosts, bins=50, color='blue', alpha=0.7)
-    plt.title('Random Boost Distribution (Power Law)')
-    plt.xlabel('Boost Value')
-    plt.ylabel('Frequency')
-    plt.axvline(1 * max_boost / 3, color='red', linestyle='dashed', linewidth=2, label='Mean (1)')
-    plt.legend()
-    plt.show()
-
 if __name__ == "__main__":
     main()
-    plot_boost_distribution()
