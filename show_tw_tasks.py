@@ -34,11 +34,9 @@ def sort_tasks_with_random(tasks: List[Dict],
     preserved_tasks.sort(key=lambda x: x.get('urgency', 0), reverse=True)
 
     # Add random boost to other tasks
+    # Sample from a power law distribution (Pareto) for random boost
     for task in other_tasks:
-        if random.random() < boost_chance:
-            task['_random_boost'] = random.uniform(0, max_boost)
-        else:
-            task['_random_boost'] = 0
+        task['_random_boost'] = (1 + random.paretovariate(1.15)) * max_boost / 3  # Alpha=1.15
 
     # Sort other tasks by urgency + random boost
     other_tasks.sort(key=lambda x: x.get('urgency', 0) + x['_random_boost'], reverse=True)
@@ -177,5 +175,22 @@ def main():
             except KeyboardInterrupt:
                 break
 
+def plot_boost_distribution(max_boost: float = 20.0, num_samples: int = 1000):
+    """Plot a histogram of random boosts sampled from a power law distribution"""
+    import matplotlib.pyplot as plt
+
+    # Generate random boosts
+    boosts = [(1 + random.paretovariate(1.15)) * max_boost / 3 for _ in range(num_samples)]
+
+    # Plot histogram
+    plt.hist(boosts, bins=50, color='blue', alpha=0.7)
+    plt.title('Random Boost Distribution (Power Law)')
+    plt.xlabel('Boost Value')
+    plt.ylabel('Frequency')
+    plt.axvline(1 * max_boost / 3, color='red', linestyle='dashed', linewidth=2, label='Mean (1)')
+    plt.legend()
+    plt.show()
+
 if __name__ == "__main__":
     main()
+    plot_boost_distribution()
