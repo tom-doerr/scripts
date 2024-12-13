@@ -33,10 +33,8 @@ def sort_tasks_with_random(tasks: List[Dict],
     # Sort preserved tasks by urgency
     preserved_tasks.sort(key=lambda x: x.get('urgency', 0), reverse=True)
 
-    # Add random boost to other tasks
-    # Sample from a power law distribution (Pareto) for random boost
-    for task in other_tasks:
-        task['_random_boost'] = (1 + random.paretovariate(1.15)) * max_boost / 3  # Alpha=1.15
+    # Add random boost to other tasks using a power law distribution (Pareto)
+    other_tasks = [{**task, '_random_boost': (1 + random.paretovariate(1.5)) * max_boost / 3} for task in other_tasks]
 
     # Sort other tasks by urgency + random boost
     other_tasks.sort(key=lambda x: x.get('urgency', 0) + x['_random_boost'], reverse=True)
