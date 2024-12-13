@@ -4,8 +4,8 @@ import subprocess
 import random
 
 # Constants for Pareto distribution
-PARETO_ALPHA = 10
-PARETO_DIVISION = 10
+PARETO_ALPHA = 3
+PARETO_DIVISION = 3
 import os
 import time
 import argparse
