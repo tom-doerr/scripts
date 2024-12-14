@@ -4,7 +4,7 @@ import subprocess
 import random
 
 # Constant for Pareto distribution
-PARETO_CONSTANT = 3
+PARETO_CONSTANT = 4
 import os
 import time
 import argparse
