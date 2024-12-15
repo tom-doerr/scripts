@@ -58,3 +58,43 @@ echo "$(date): Syncthing accumulation completed" >> "$LOG_FIL
 echo "----------------------------------------"               
 echo "----------------------------------------" >> "$LOG_FILE 
 
+#!/bin/bash
+set -x
+
+# Directory paths
+SOURCE_DIR="/mnt/8tb_hdd/syncthing"
+ACCUMULATOR_DIR="/mnt/8tb_hdd/syncthing_accumulated"
+LOG_FILE="/mnt/8tb_hdd/syncthing_accumulator.log"
+
+echo "Script starting..."
+echo "Checking directories..."
+
+# Check if source directory exists
+if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Source directory does not exist: $SOURCE_DIR"
+    exit 1
+fi
+
+# Create accumulator directory if it doesn't exist
+mkdir -p "$ACCUMULATOR_DIR"
+
+# Function to accumulate files
+accumulate_files() {
+    find "$SOURCE_DIR" -type f -print0 | while IFS= read -r -d '' file; do
+        # Get relative path
+        rel_path="${file#$SOURCE_DIR/}"
+        # Create target directory
+        target_dir="$ACCUMULATOR_DIR/$(dirname "$rel_path")"
+        mkdir -p "$target_dir"
+        # Copy file if it doesn't exist in target
+        if [ ! -f "$ACCUMULATOR_DIR/$rel_path" ]; then
+            cp "$file" "$ACCUMULATOR_DIR/$rel_path"
+            echo "Copied: $rel_path" >> "$LOG_FILE"
+        fi
+    done
+}
+
+# Run the accumulation
+accumulate_files
+
+echo "Script completed."
