@@ -163,15 +163,21 @@ def display_tasks(filter_cmd):
     print(truncated_output)
 
 def get_data_files_mtime():
-    """Get the latest modification time of TaskWarrior data files"""
+    """Get the latest modification time of TaskWarrior data files and config"""
     data_dir = os.path.expanduser('~/.task')
     data_files = ['pending.data', 'completed.data', 'undo.data']
+    config_file = os.path.expanduser('~/.taskrc')
     mtimes = []
     
+    # Check data files
     for file in data_files:
         file_path = os.path.join(data_dir, file)
         if os.path.exists(file_path):
             mtimes.append(os.path.getmtime(file_path))
+    
+    # Check config file
+    if os.path.exists(config_file):
+        mtimes.append(os.path.getmtime(config_file))
     
     return max(mtimes) if mtimes else 0
 
