@@ -20,6 +20,16 @@ from task_id_mapper import number_to_char_id
 
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
+    # Get current context
+    try:
+        context = subprocess.check_output(['task', '_get', 'rc.context']).decode('utf-8').strip()
+    except subprocess.CalledProcessError:
+        context = ''
+    
+    # If context exists, prepend it to the filter command
+    if context:
+        filter_cmd = ['task', f'context:{context}'] + filter_cmd[1:]
+    
     task_export = subprocess.check_output(filter_cmd).decode('utf-8')
     return json.loads(task_export)
 
