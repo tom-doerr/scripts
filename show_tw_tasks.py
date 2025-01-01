@@ -18,19 +18,39 @@ from datetime import datetime
 from task_id_mapper import number_to_char_id
 
 
+def get_context_filter() -> str:
+    """Get the filter for the current context from .taskrc"""
+    try:
+        # Get current context
+        context = subprocess.check_output(['task', '_get', 'rc.context']).decode('utf-8').strip()
+        if not context:
+            return ''
+            
+        # Read .taskrc file
+        with open(os.path.expanduser('~/.taskrc'), 'r') as f:
+            for line in f:
+                if line.startswith(f'context.{context}='):
+                    return line.split('=', 1)[1].strip()
+        return ''
+    except Exception:
+        return ''
+
 def get_tasks(filter_cmd: List[str]) -> List[Dict]:
     """Get tasks from TaskWarrior using specified filter command"""
-    # Get current context
-    try:
-        context = subprocess.check_output(['task', '_get', 'rc.context']).decode('utf-8').strip()
-    except subprocess.CalledProcessError:
-        context = ''
+    # Get context filter
+    context_filter = get_context_filter()
     
-    # If context exists, prepend it to the filter command
-    if context:
-        filter_cmd = ['task', f'context:{context}'] + filter_cmd[1:]
+    # Build the base command
+    base_cmd = ['task']
     
-    task_export = subprocess.check_output(filter_cmd).decode('utf-8')
+    # Add context filter if exists
+    if context_filter:
+        base_cmd.extend(context_filter.split())
+    
+    # Add the rest of the filters, skipping the initial 'task'
+    base_cmd.extend(filter_cmd[1:])
+    
+    task_export = subprocess.check_output(base_cmd).decode('utf-8')
     return json.loads(task_export)
 
 def sort_tasks_with_random(tasks: List[Dict], 
