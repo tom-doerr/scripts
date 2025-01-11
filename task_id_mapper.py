@@ -58,7 +58,7 @@ if __name__ == "__main__":
         print("Usage: task_id_mapper.py <char_id> or task_id_mapper.py <num_id>")
         sys.exit(1)
 
-    print("sys.argv[1].isdigit():", sys.argv[1].isdigit())
+    # print("sys.argv[1].isdigit():", sys.argv[1].isdigit())
     if not sys.argv[1].isdigit():
         char_id = sys.argv[1]
         try:
