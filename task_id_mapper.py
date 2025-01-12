@@ -72,7 +72,7 @@ def char_id_to_number(char_id: str) -> int:
     for c in char_id:
         result = result * len(HOMEROW_CHARS) + HOMEROW_CHARS.index(c) + 1
 
-    result = start_num - result
+    result = get_start_num() - result
     return result
 
 if __name__ == "__main__":
