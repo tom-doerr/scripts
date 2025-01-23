@@ -2,6 +2,7 @@
 
 import json
 import sys
+import os
 from task_id_mapper import number_to_char_id
 
 # Only show char ID for add commands
