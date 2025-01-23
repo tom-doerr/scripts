@@ -4,6 +4,7 @@ import json
 import sys
 import os
 import subprocess
+sys.path.insert(0, os.path.expanduser("~/git/scripts/task"))
 from task_id_mapper import number_to_char_id, get_start_num
 
 
