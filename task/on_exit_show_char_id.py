@@ -18,4 +18,5 @@ if len(sys.argv) > 1 and sys.argv[1] == 'add':
             else:  # No matching line found
                 sys.exit(0)
         char_id = number_to_char_id(task_id)
-        print(f"Created task with char ID: {char_id}", file=sys.stderr)
+        print(f"Created task with char ID: {char_id} (from numeric ID: {task_id})", file=sys.stderr)
+        print(f"Current start number: {get_start_num()}", file=sys.stderr)
