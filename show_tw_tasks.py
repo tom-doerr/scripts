@@ -185,20 +185,20 @@ def main():
     # Parse arguments
     parser = argparse.ArgumentParser(description='Display TaskWarrior tasks with randomization')
     parser.add_argument('--once', action='store_true', help='Show report once and exit')
-    parser.add_argument('--interval', type=float, default=0.1, 
+    parser.add_argument('--interval', type=float, default=0.1,
                        help='Scan interval in seconds (default: 0.1)')
+    parser.add_argument('filter_args', nargs='*', help='TaskWarrior filter arguments')
     args = parser.parse_args()
 
-    # Default filter command - can be customized
-    filter_cmd = [
-        'task', 'status:Pending', '-BLOCKED',
+    # Use command line filters if provided, else use default context filter
+    filter_cmd = args.filter_args if args.filter_args else [
+        'status:Pending', '-BLOCKED',
         'and', '(-ing', 'or', '+self)',
-        'and', '-bu', '-sm', #'-scheduled_today_custom',
-        'export'
+        'and', '-bu', '-sm'
     ]
 
     if args.once:
-        display_tasks(filter_cmd)
+        display_tasks(['task'] + filter_cmd + ['export'])
     else:
         last_mtime = 0
         
@@ -206,7 +206,7 @@ def main():
             try:
                 current_mtime = get_data_files_mtime()
                 if current_mtime > last_mtime:
-                    display_tasks(filter_cmd)
+                    display_tasks(['task'] + filter_cmd + ['export'])
                     last_mtime = current_mtime
                 time.sleep(args.interval)
             except KeyboardInterrupt:
