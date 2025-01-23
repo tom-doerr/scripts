@@ -6,11 +6,12 @@ import os
 from task_id_mapper import number_to_char_id, get_start_num
 
 
-if len(sys.argv) > 2 and sys.argv[2] == 'add':
-    # Read the task JSON from stdin
-    task = json.load(sys.stdin)
-    
-    if 'id' in task:
-        task_id = task['id']
-        char_id = number_to_char_id(task_id)
-        print(f"Created task with char ID: {char_id}", file=sys.stderr)
+# Check if any arg contains the add command
+if any(arg.startswith('command:add') for arg in sys.argv):
+    # Read all task JSON lines from stdin
+    for line in sys.stdin:
+        task = json.loads(line)
+        if 'id' in task:
+            task_id = task['id']
+            char_id = number_to_char_id(task_id)
+            print(f"Created task with char ID: {char_id}", file=sys.stderr)
