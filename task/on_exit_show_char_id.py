@@ -3,7 +3,7 @@
 import json
 import sys
 import os
-from task_id_mapper import number_to_char_id
+from task_id_mapper import number_to_char_id, get_start_num
 
 # Only show char ID for add commands 
 if len(sys.argv) > 1 and sys.argv[1] == 'add':
