@@ -7,9 +7,15 @@ from task_id_mapper import number_to_char_id
 
 # Only show char ID for add commands 
 if len(sys.argv) > 1 and sys.argv[1] == 'add':
-    # Get the last added task ID from log
-    result = os.popen('task newest limit:1 id').read()
-    if result.strip().isdigit():
-        task_id = int(result.strip())
+    # Get task ID from stderr output
+    stderr_file = os.environ.get('TASK_STDERR')
+    if stderr_file and os.path.exists(stderr_file):
+        with open(stderr_file, 'r') as f:
+            for line in f:
+                if 'Created task' in line:
+                    task_id = int(line.split()[-1].strip('.'))
+                    break
+            else:  # No matching line found
+                return
         char_id = number_to_char_id(task_id)
         print(f"Created task with char ID: {char_id}", file=sys.stderr)
