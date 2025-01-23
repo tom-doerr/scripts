@@ -3,6 +3,7 @@
 import json
 import sys
 import os
+import subprocess
 from task_id_mapper import number_to_char_id, get_start_num
 
 
@@ -15,6 +16,11 @@ if any(arg.startswith('command:add') for arg in sys.argv):
         print('parsed line')
         if 'id' in task:
             print('task has id')
-            task_id = task['id']
-            char_id = number_to_char_id(task_id)
-            print(f"Created task with char ID: {char_id}", file=sys.stderr)
+            # Get stable UUID and convert to task ID
+            task_uuid = task['uuid']
+            try:
+                task_id = int(subprocess.check_output(f"task _get {task_uuid}.id", shell=True).decode().strip())
+                char_id = number_to_char_id(task_id)
+                print(f"Created task with char ID: {char_id}", file=sys.stderr)
+            except (subprocess.CalledProcessError, ValueError) as e:
+                print(f"Error getting task ID: {e}", file=sys.stderr)
