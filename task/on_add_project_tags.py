@@ -25,15 +25,17 @@ except json.JSONDecodeError as e:
 if "project" in input_task:
     projects = input_task["project"].split('.')
     for project in projects:
+        if "tags" not in input_task:
+            input_task["tags"] = []
+        input_task["tags"].append(project)
+
         if project in PROJECT_TAGS:
-            # Initialize tags if not present
-            if "tags" not in input_task:
-                input_task["tags"] = []
-            
             # Add the mapped tags if they're not already present
             for tag in PROJECT_TAGS[project]:
                 if tag not in input_task["tags"]:
                     input_task["tags"].append(tag)
+
+
 
 # Output the modified task
 print(json.dumps(input_task))
