@@ -5,8 +5,8 @@ import sys
 import os
 import subprocess
 
-# Add directory containing task_id_mapper.py to path
-sys.path.insert(0, os.path.expanduser("~/git/scripts/task"))
+# Add scripts directory to path for module resolution
+sys.path.insert(0, os.path.expanduser("~/git/scripts"))
 from task_id_mapper import number_to_char_id, get_start_num
 
 
