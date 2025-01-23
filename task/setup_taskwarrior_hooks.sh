@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Define paths
 HOOKS_DIR="$HOME/.task/hooks"
@@ -20,7 +20,7 @@ create_hook_symlink() {
     
     if ln -s "$source" "$target"; then
         echo "Successfully created hook: $hook_name"
-        chmod +x "$target"
+        chmod +x "$source" "$target"
     else
         echo "Failed to create hook: $hook_name"
         exit 1
