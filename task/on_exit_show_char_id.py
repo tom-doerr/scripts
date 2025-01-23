@@ -16,6 +16,6 @@ if len(sys.argv) > 1 and sys.argv[1] == 'add':
                     task_id = int(line.split()[-1].strip('.'))
                     break
             else:  # No matching line found
-                return
+                sys.exit(0)
         char_id = number_to_char_id(task_id)
         print(f"Created task with char ID: {char_id}", file=sys.stderr)
