@@ -22,6 +22,6 @@ if any(arg.startswith('command:add') for arg in sys.argv):
             try:
                 task_id = int(subprocess.check_output(f"task _get {task_uuid}.id", shell=True).decode().strip())
                 char_id = number_to_char_id(task_id)
-                print(f"Created task with char ID: {char_id}", file=sys.stderr)
+                print(f"Char ID: {char_id}", file=sys.stderr)
             except (subprocess.CalledProcessError, ValueError) as e:
                 print(f"Error getting task ID: {e}", file=sys.stderr)
