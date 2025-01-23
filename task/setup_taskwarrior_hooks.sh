@@ -31,7 +31,7 @@ create_hook_symlink() {
 create_hook_symlink "$SCRIPTS_DIR/on_add_project_tags.py" "on-add.project_tags"
 
 # Set up char ID display hook (on-add)
-create_hook_symlink "$SCRIPTS_DIR/on_exit_show_char_id.py" "on-add.char_id"
+create_hook_symlink "$SCRIPTS_DIR/on_exit_show_char_id.py" "on-exit.char_id"
 
 # Set up description tags hook
 create_hook_symlink "$SCRIPTS_DIR/on_add_description_tags.py" "on-add.description_tags"
