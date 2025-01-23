@@ -53,15 +53,15 @@ def number_to_char_id(num_1: int) -> str:
     if num_1 <= 0:
         raise ValueError("ID must be positive")
     
-    result = ""
+    result = []
     num = get_start_num() - num_1
     while num > 0:
         num -= 1  # Convert to 0-based for modulo
-        result = HOMEROW_CHARS[num % len(HOMEROW_CHARS)] + result
-        num //= len(HOMEROW_CHARS)
-
+        result.append(HOMEROW_CHARS[num % len(HOMEROW_CHARS)])
+        num = num // len(HOMEROW_CHARS)
+    
     check_if_start_num_needs_updating(num_1)
-    return result
+    return ''.join(reversed(result))
 
 def char_id_to_number(char_id: str) -> int:
     """Convert a character-based ID back to numeric ID"""
