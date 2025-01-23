@@ -4,7 +4,10 @@ import json
 import sys
 import os
 import subprocess
-sys.path.insert(0, os.path.expanduser("~/git/scripts/task"))
+
+# Add script directory to path for module resolution
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
 from task_id_mapper import number_to_char_id, get_start_num
 
 
