@@ -30,4 +30,7 @@ create_hook_symlink() {
 # Set up project tags hook
 create_hook_symlink "$SCRIPTS_DIR/on_add_project_tags.py" "on-add.project_tags"
 
+# Set up char ID display hook (on-exit)
+create_hook_symlink "$SCRIPTS_DIR/on_exit_show_char_id.py" "on-exit.char_id"
+
 echo "Taskwarrior hooks setup complete!"
