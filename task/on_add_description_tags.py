@@ -10,7 +10,7 @@ input_task = json.loads(sys.stdin.readline())
 # Load description-to-tags mapping from multiple config files
 config_paths = [
     '/home/tom/git/private/taskwarrior_project_tags.json',
-    '/home/tom/git/private/tags.config.json'
+    '/home/tom/git/private/tags.json'
 ]
 
 TAG_CONFIGS = {}
@@ -32,9 +32,33 @@ if "description" in input_task:
         
     description = input_task["description"]
     if description in TAG_CONFIGS:
-        for tag in TAG_CONFIGS[description]:
-            if tag not in input_task["tags"]:
-                input_task["tags"].append(tag)
+        print("TAG_CONFIGS[description]:", TAG_CONFIGS[description])
+        if type(TAG_CONFIGS[description]) is str:
+            input_task["tags"].append(TAG_CONFIGS[description])
+        else:
+            for tag in TAG_CONFIGS[description]:
+                if tag not in input_task["tags"]:
+                    input_task["tags"].append(tag)
+
+task_tags_last_iter = []
+while True:
+    for tag in input_task["tags"]:
+        if tag in TAG_CONFIGS:
+            if type(TAG_CONFIGS[tag]) is str:
+                if TAG_CONFIGS[tag] not in input_task["tags"]:
+                    input_task["tags"].append(TAG_CONFIGS[tag])
+            else:
+                for new_tag in TAG_CONFIGS[tag]:
+                    if new_tag not in input_task["tags"]:
+                        input_task["tags"].append(new_tag)
+
+
+
+
+    if task_tags_last_iter == input_task["tags"]:
+        break
+
+    task_tags_last_iter = input_task["tags"]
 
 # Output the modified task
 print(json.dumps(input_task))
