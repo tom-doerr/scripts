@@ -20,7 +20,9 @@ except json.JSONDecodeError as e:
     PROJECT_TAGS = {}
 
 # Add tags based on exact description match
+print('inside on_add_description_tags.py')
 if "description" in input_task:
+    print('description found')
     if "tags" not in input_task:
         input_task["tags"] = []
         
