@@ -1,0 +1,10 @@
+[Unit]
+Description=Run copy_last_image.service every second
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1s
+Unit=copy_last_image.service
+
+[Install]
+WantedBy=timers.target
