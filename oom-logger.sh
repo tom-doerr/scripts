@@ -17,8 +17,8 @@ swap_gb=$((sused / 1048576))
 # PSI memory pressure (avg10)
 psi=$(awk -F= '/some/{gsub(/ .*/,"",$2); print $2}' /proc/pressure/memory 2>/dev/null)
 
-# Zram compression ratio
-zram=$(zramctl --raw --noheadings -o DATA,COMPR /dev/zram0 2>/dev/null | awk '{if($2>0)printf "%.1fx",$1/$2}')
+# Zram stats (data/compressed/ratio)
+zram=$(zramctl -b --raw --noheadings -o DATA,COMPR /dev/zram0 2>/dev/null | awk '{d=$1/1073741824;c=$2/1073741824;r=c>0?d/c:0;printf "%.1fG/%.1fG/%.0fx",d,c,r}')
 
 gpu=$(nvidia-smi --query-gpu=utilization.gpu,power.draw --format=csv,noheader,nounits 2>/dev/null | tr -d ' ')
 top5=$(ps -eo pid,rss,args --sort=-rss | head -6 | tail -5 | awk '{pid=$1;rss=$2;$1=$2="";gsub(/^ +/,"");cmd=substr($0,1,60);printf "%d:%.1fG:%s | ",pid,rss/1048576,cmd}')
