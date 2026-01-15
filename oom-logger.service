@@ -1,0 +1,6 @@
+[Unit]
+Description=Log system metrics for OOM debugging
+
+[Service]
+Type=oneshot
+ExecStart=/home/tom/git/scripts/oom-logger.sh
