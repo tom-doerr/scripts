@@ -1,9 +1,10 @@
 [Unit]
-Description=Run OOM logger every 10 seconds
+Description=Run OOM logger every second
 
 [Timer]
-OnBootSec=10
-OnUnitActiveSec=10
+OnBootSec=1
+OnUnitActiveSec=1
+AccuracySec=100ms
 
 [Install]
 WantedBy=timers.target
