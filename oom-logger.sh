@@ -21,6 +21,6 @@ psi=$(awk -F= '/some/{gsub(/ .*/,"",$2); print $2}' /proc/pressure/memory 2>/dev
 zram=$(zramctl --raw --noheadings -o DATA,COMPR /dev/zram0 2>/dev/null | awk '{if($2>0)printf "%.1fx",$1/$2}')
 
 gpu=$(nvidia-smi --query-gpu=utilization.gpu,power.draw --format=csv,noheader,nounits 2>/dev/null | tr -d ' ')
-top5=$(ps -eo comm,rss --sort=-rss | head -6 | tail -5 | awk '{printf "%s(%.1fG) ",$1,$2/1048576}')
+top5=$(ps -eo pid,rss,args --sort=-rss | head -6 | tail -5 | awk '{pid=$1;rss=$2;$1=$2="";gsub(/^ +/,"");cmd=substr($0,1,60);printf "%d:%.1fG:%s | ",pid,rss/1048576,cmd}')
 
 echo "$TS MEM:${mem_pct}%/${avail}G SWAP:${swap_pct}%/${swap_gb}G PSI:${psi} ZRAM:${zram} GPU:${gpu} ANON:${anon}G HUGE:${anonhuge}G SHMEM:${shmem}G DIRTY:${dirty}G TOP:$top5" >> "$LOG"
